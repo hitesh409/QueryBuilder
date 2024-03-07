@@ -1,10 +1,26 @@
+using BackendAPI.Interfaces;
 using BackendAPI.Models;
+using BackendAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+var provider = builder.Services.BuildServiceProvider();
+var config = provider.GetRequiredService<IConfiguration>();
+builder.Services.AddDbContext<QueryBuilderContext>(item => item.UseSqlServer(config.GetConnectionString("con")));
+
+builder.Services.AddControllers();
+builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 // Jwt configuration
 var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
@@ -13,6 +29,8 @@ var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
  .AddJwtBearer(options =>
  {
+     options.RequireHttpsMetadata = false;
+     options.SaveToken = true;
      options.TokenValidationParameters = new TokenValidationParameters
      {
          ValidateIssuer = true,
@@ -25,14 +43,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      };
  });
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-var provider = builder.Services.BuildServiceProvider();
-var config = provider.GetRequiredService<IConfiguration>();
-builder.Services.AddDbContext<QueryBuilderContext>(item => item.UseSqlServer(config.GetConnectionString("con")));
-
-
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

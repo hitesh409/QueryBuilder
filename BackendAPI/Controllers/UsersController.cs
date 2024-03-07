@@ -1,4 +1,7 @@
-﻿using BackendAPI.Models;
+﻿using BackendAPI.Interfaces;
+using BackendAPI.Models;
+using BackendAPI.RequestModel;
+using BackendAPI.Services;
 using BCrypt.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,37 +19,23 @@ namespace BackendAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly QueryBuilderContext _context;
-        private readonly IConfiguration _config;
 
-        public UsersController(QueryBuilderContext context,IConfiguration config)
+        private readonly IAuthService _authService;
+
+        public UsersController(IAuthService authService)
         {
-            this._context = context;
-            this._config = config;
+            
+            this._authService = authService;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterModel register)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.Values.SelectMany(e => e.Errors).Select(e => e.ErrorMessage).ToArray());
             }
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                Username = register.UserName,
-                Email = register.Email,
-                CreatedAt = DateTime.UtcNow,
-            };
-
-            var salt = BCrypt.Net.BCrypt.GenerateSalt();
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(register.Password,salt);
-
-            user.PasswordHash = passwordHash;
-
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            var user = await _authService.AddUser(register);
             return Ok(user);
         }
 
@@ -59,29 +48,7 @@ namespace BackendAPI.Controllers
                 return BadRequest(ModelState.Values.SelectMany(e=>e.Errors).Select(e=>e.ErrorMessage).ToArray());
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(u=>u.Username == login.Username);
-            if(user == null)
-            {
-                return Unauthorized("Invalid credentials");
-            }
-
-            var isPasswordValid = BCrypt.Net.BCrypt.Verify(login.Password,user.PasswordHash);
-
-            if (!isPasswordValid)
-            {
-                return Unauthorized("Invalid credential");
-            }
-
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var Sectoken = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
-              null,
-              expires: DateTime.Now.AddMinutes(120),
-              signingCredentials: credentials);
-
-            var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+            var token =await _authService.Login(login);
 
             return Ok(token);
 
@@ -89,18 +56,4 @@ namespace BackendAPI.Controllers
     }
 }
 
-public class RegisterModel
-{
-    public string UserName { get; set; }
-    public string Password { get; set; }
-    public string Email { get; set; }
-}
 
-public class LoginModel
-{
-    [Required]
-    public string Username { get; set; }
-
-    [Required]
-    public string Password { get; set; }
-}
