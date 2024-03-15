@@ -1,9 +1,12 @@
 ﻿using BackendAPI.Interfaces;
 using BackendAPI.Models;
+using BackendAPI.RequestModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using System.Runtime.InteropServices.Marshalling;
 using System.Security.Claims;
 
 namespace BackendAPI.Controllers
@@ -69,6 +72,63 @@ namespace BackendAPI.Controllers
             return Ok(new { message = "Dataset uploaded successfully!" });
         }
 
+        [HttpPost("Segregation")]
+        public async Task<IActionResult> SegregateTablesAndColumns()
+        {
+            
+            try
+            {
+                var userIdClaim = User.FindFirst("Id");
+
+                if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+                {
+                    return BadRequest("Invalid or missing 'UserId' claim");
+                }
+
+                var fileData = await GetFileData(userId);
+
+                if(fileData == null)
+                {
+                    return NotFound("No file found");
+                }
+
+                using (var stream = new MemoryStream(fileData))
+                {
+                    var tables = ParseExcelFile(stream);
+                    return Ok(tables);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error parsing dataset:{ex.Message}");
+            }
+        }
+
+        private async Task<byte[]> GetFileData(Guid userId)
+        {
+            var dataset = await _context.Datasets.FirstOrDefaultAsync(x => x.UserId == userId);
+            if(dataset == null)
+            {
+                return null;
+            }
+            return System.IO.File.ReadAllBytes(dataset.Location);
+        }
+
+        private List<TableInfo> ParseExcelFile(Stream stream)
+        {
+            List<TableInfo> tables = new List<TableInfo>();
+            using (var package = new OfficeOpenXml.ExcelPackage(stream))
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                foreach (var worksheet in package.Workbook.Worksheets)
+                {
+                    var tableName = worksheet.Name;
+                    var columnNames = worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column].Select(c => c.Text).ToList();
+                    tables.Add(new TableInfo { TableName = tableName, ColumnNames = columnNames });
+                }
+            }
+            return tables;
+        }
     }
 }
 
