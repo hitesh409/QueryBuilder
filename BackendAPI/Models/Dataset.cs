@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BackendAPI.Models;
 
@@ -19,5 +20,6 @@ public partial class Dataset
 
     public virtual ICollection<Query> Queries { get; set; } = new List<Query>();
 
+    [JsonIgnore]
     public virtual User User { get; set; } = null!;
 }

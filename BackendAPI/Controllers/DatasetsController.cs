@@ -73,7 +73,7 @@ namespace BackendAPI.Controllers
         }
 
         [HttpPost("Segregation")]
-        public async Task<IActionResult> SegregateTablesAndColumns()
+        public async Task<IActionResult> SegregateTablesAndColumns(Guid datasetId)
         {
             
             try
@@ -85,7 +85,14 @@ namespace BackendAPI.Controllers
                     return BadRequest("Invalid or missing 'UserId' claim");
                 }
 
-                var fileData = await GetFileData(userId);
+                List<Dataset> datasets;
+                datasets = await _context.Datasets.Where(d=>d.UserId == userId).ToListAsync();
+                if(datasetId != Guid.Empty && !datasets.Any(d=>d.Id == datasetId)) 
+                {
+                    return BadRequest("Invalid Dataset for user");
+                }
+
+                var fileData = await GetFileData(datasetId);
 
                 if(fileData == null)
                 {
@@ -104,9 +111,9 @@ namespace BackendAPI.Controllers
             }
         }
 
-        private async Task<byte[]> GetFileData(Guid userId)
+        private async Task<byte[]> GetFileData(Guid datasetId)
         {
-            var dataset = await _context.Datasets.FirstOrDefaultAsync(x => x.UserId == userId);
+            var dataset = await _context.Datasets.FirstOrDefaultAsync(x => x.Id == datasetId);
             if(dataset == null)
             {
                 return null;
