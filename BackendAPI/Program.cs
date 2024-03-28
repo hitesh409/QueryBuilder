@@ -23,6 +23,7 @@ builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<DatabaseConnectionService>();
 
 // Jwt configuration
 var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
