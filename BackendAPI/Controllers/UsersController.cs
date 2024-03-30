@@ -4,6 +4,7 @@ using BackendAPI.RequestModel;
 using BackendAPI.Services;
 using BCrypt.Net;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,7 @@ namespace BackendAPI.Controllers
             return Ok(user);
         }
 
+        [EnableCors("myAppCors")]               
         [HttpPost("login")]
         
         public async Task<IActionResult> LoginUser([FromBody] LoginModel login)

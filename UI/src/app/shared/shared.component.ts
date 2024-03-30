@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrl: './shared.component.css'
 })
 export class SharedComponent {
+  showLogoutOverlay = false;
 
+  toggleOverlay() {
+    this.showLogoutOverlay = !this.showLogoutOverlay;
+  }
+
+  handleLogout() {
+    console.log('User logged out!'); 
+    this.showLogoutOverlay = false;
+  }
 }
