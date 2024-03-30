@@ -1,4 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+:root{
+    --screen: #131314;
+    --sidebar: #1E1F20;
+    --hover : #333537;
+    --card : #1E1F20;
+    --font : #E3E3D8;
+}
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Noto Sans, "Noto Sans", sans-serif;background-color: var(--screen); }
+
+
+
