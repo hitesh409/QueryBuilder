@@ -1,0 +1,67 @@
+.login-container{
+    display: flex;
+    color: var(--font);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: var(--screen);
+    font-family: 'MyFont';
+}
+.avatar{
+    color: var(--font);
+    border: 1px solid white;
+    padding: 1rem 1rem  0rem 1rem;
+    border-radius: 50% 50% 0 0 ;
+    border-bottom: none;
+    margin-bottom: 0;
+    
+}
+
+.profile{
+    font-size: 3.5rem;
+}
+
+.form-container{
+    border: 1px solid white;
+    border-radius: 1rem;
+    color: var(--font);
+    padding: 1rem;
+}
+.form-group{
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+.login-avatar{
+    padding-top: 1rem;
+    padding-right: 1rem;
+}
+::placeholder{
+    color: var(--font);
+    opacity: 0.5;
+}
+
+.form-control{
+    color: var(--font);
+    margin-top: 0.5rem;
+    border:none;
+    border-radius: 0;
+    background-color: var(--screen);
+    border-bottom: 1px solid var(--font);
+}
+
+.form-control:hover{
+    border-radius: 0.2rem;
+    background-color: var(--hover);
+}
+
+.form-control:active{
+    border: none;
+}
+
+button{
+    width: 100%;
+}

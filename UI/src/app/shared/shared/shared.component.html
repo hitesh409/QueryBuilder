@@ -1,0 +1,40 @@
+<div class="screen">
+    <div class="sidebar">
+
+        <div class="sidebar-header">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#sidebar">
+                <i class="material-icons">menu</i>
+            </button>
+            
+        </div>
+    
+        <div class="sidebar-content">
+            <div class="uploaddb">
+                <div class="buttondb">
+                    <mat-icon>add</mat-icon>
+                    <span class="text">New Database</span>
+                </div>
+            </div>
+           <div class="databases">
+                <ul>
+                    <li></li>
+                </ul>
+           </div>
+            
+        </div>
+    
+    </div>
+    <div class="main-screen">
+        <header>
+            <div class="flex-container">
+                <div class="logoname">Query Builder</div>
+                <div class="overlaying">
+                    <div class="userlogo" (click)="toggleOverlay()"><i class="material-icons">person</i></div>
+                </div>
+                
+            </div>
+            <app-logout   *ngIf="showLogoutOverlay" (logoutClicked)="handleLogout()"></app-logout>
+        </header>
+        
+    </div>
+</div>

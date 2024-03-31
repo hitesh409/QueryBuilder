@@ -1,0 +1,67 @@
+.logout-overlay{
+    font-family: 'MyFont';
+    background-color: var(--overlay);
+    width: fit-content;
+    float: right;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    color: var(--font);
+}
+.title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+}
+.title h3{
+    padding-right: 5rem;
+    padding-left: 5rem;
+}
+.avatar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.profile{
+    font-size:3rem ;
+    border: 1px solid C2185B;
+    padding: 1rem;
+    border-radius: 50%;
+    background-color: #C2185B;
+}
+
+.logout{
+    background-color: var(--screen);
+    padding: 0.7rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: fit-content;
+    border-radius: 2rem;
+    cursor: pointer;
+}
+.logout:hover{
+    background-color: var(--hover);
+}
+.logout-icon{
+    margin-right: 1rem;
+}
+.logout span{
+    font-size: 1rem;
+}
+.overlay-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0.7rem;
+}
+.close{
+    float: right;
+    cursor: pointer;
+}
+.cancel button{
+    padding: 0.5rem;
+}

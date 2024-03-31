@@ -5,6 +5,11 @@
     --hover : #333537;
     --card : #1E1F20;
     --font : #E3E3D8;
+    --overlay:#282A2C;
 }
+@font-face {
+    font-family: 'MyFont';
+    src: url('../src/assets/fonts/NotoSans-VariableFont_wdth\,wght.ttf');
+  }
 html, body { height: 100%; }
-body { margin: 0; font-family: Noto+Sans, sans-serif;background-color: var(--screen); }
+body { margin: 0;padding: 0; font-family: 'MyFont';background-color: var(--screen); }
