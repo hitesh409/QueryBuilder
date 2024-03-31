@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+:root{
+    --screen: #131314;
+    --sidebar: #1E1F20;
+    --hover : #333537;
+    --card : #1E1F20;
+    --font : #E3E3D8;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Noto+Sans, sans-serif;background-color: var(--screen); }
