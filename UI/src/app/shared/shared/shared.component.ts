@@ -13,19 +13,19 @@ import { animate, style, transition, trigger } from '@angular/animations';
     trigger('tableOpenClose', [
       transition('closed => open', [
         style({ height: '0px', opacity: 0 }),
-        animate('1ms ease-in-out', style({ height: '*', opacity: 1 }))
+        animate('1ms ease-in-out', style({ height: '*', opacity: 1 })),
       ]),
       transition('open => closed', [
         style({ height: '*', opacity: 1 }),
-        animate('1s ease-in-out', style({ height: '0px', opacity: 0 }))
-      ])
-    ])
-  ]
+        animate('1s ease-in-out', style({ height: '0px', opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class SharedComponent implements OnInit {
   showLogoutOverlay = false;
   showUploadOverlay = false;
-  showTables : boolean = false;
+  showTables: boolean = false;
   chosenDatasetIndex: number = -1;
   chosenDataset: DatasetModel | null = null;
   datasets: DatasetModel[] = [];
@@ -37,10 +37,20 @@ export class SharedComponent implements OnInit {
     this.fetchDatasets();
   }
 
-  async fetchDatasets(){
+  async fetchDatasets() {
     this.datasetService.getDataset().subscribe(
-      (datasets:DatasetModel[]) => {
-        this.datasets = datasets.sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime());
+      (datasets: DatasetModel[]) => {
+        this.datasets = datasets
+          .sort(
+            (a, b) =>
+              new Date(b.uploadedAt).getTime() -
+              new Date(a.uploadedAt).getTime()
+          )
+          .map((dataset) => ({
+            ...dataset,
+            name: dataset.name.replace(/\.[^/.]+$/, ''),
+          }));
+
         console.log('datasets: ', this.datasets);
       },
       (error) => {
@@ -73,7 +83,7 @@ export class SharedComponent implements OnInit {
     this.showLogoutOverlay = !this.showLogoutOverlay;
   }
 
-  toggleUpload(){
+  toggleUpload() {
     this.showUploadOverlay = true;
   }
 
@@ -82,13 +92,12 @@ export class SharedComponent implements OnInit {
     this.showLogoutOverlay = !this.showLogoutOverlay;
   }
 
-  handleUpload(){
+  handleUpload() {
     console.log('Uploaded successfully');
     this.showUploadOverlay = !this.showUploadOverlay;
   }
 
-  onDatasetUploaded(){
+  onDatasetUploaded() {
     this.fetchDatasets();
   }
-
 }
