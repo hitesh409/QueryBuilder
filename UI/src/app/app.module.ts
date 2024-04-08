@@ -13,14 +13,21 @@ import {MatCardModule} from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedComponent } from './shared/shared/shared.component';
 import { MatIconModule } from '@angular/material/icon';
-import { LogoutComponent } from './components/logout/logout.component'
+import { LogoutComponent } from './components/logout/logout.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UploadDatabaseComponent } from './components/upload-database/upload-database.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SharedComponent,
-    LogoutComponent
+    LogoutComponent,
+    UploadDatabaseComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -32,7 +39,10 @@ import { LogoutComponent } from './components/logout/logout.component'
     MatButtonModule,
     MatCardModule,
     MatIconButton,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule,
+    ScrollingModule,
+    BrowserAnimationsModule
   ],
   providers: [
     provideAnimationsAsync()

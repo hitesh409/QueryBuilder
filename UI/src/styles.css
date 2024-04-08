@@ -2,10 +2,11 @@
 :root{
     --screen: #131314;
     --sidebar: #1E1F20;
-    --hover : #333537;
+    --hover : #282A2C;
     --card : #1E1F20;
     --font : #E3E3D8;
-    --overlay:#282A2C;
+    --active:#004A77;
+    --overlay:#1E1F20;
 }
 @font-face {
     font-family: 'MyFont';

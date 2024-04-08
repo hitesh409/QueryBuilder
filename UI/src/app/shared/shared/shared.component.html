@@ -1,28 +1,71 @@
 <div class="screen">
     <div class="sidebar">
 
-        <div class="sidebar-header">
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#sidebar">
-                <i class="material-icons">menu</i>
-            </button>
-            
-        </div>
-    
+        
+
         <div class="sidebar-content">
+            <div class="sidebar-header">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#sidebar">
+                    <i class="material-icons">menu</i>
+                </button>
+    
+            </div>
             <div class="uploaddb">
-                <div class="buttondb">
+                <div class="buttondb" (click)="toggleUpload()" *ngIf="!showUploadOverlay" >
                     <mat-icon>add</mat-icon>
                     <span class="text">New Database</span>
                 </div>
+                <app-upload-database *ngIf="showUploadOverlay" (uploadClicked)="handleUpload()" (datasetUploaded)="onDatasetUploaded()"></app-upload-database>
             </div>
-           <div class="databases">
-                <ul>
-                    <li></li>
+            <div class="databases">
+                <div class="text">Databases</div>
+                <ul *ngIf="datasets.length!=0" class="list-group">
+                    <li *ngFor="let dataset of datasets; let index=index" class="list-group-item"
+                        (click)="toggleDatasetSelection(index)">
+                        <div [ngClass]="{'selected':chosenDatasetIndex==index}" class="front" 
+                            matTooltip="Connect to database" matTooltipPosition="right"
+                            matTooltipClass="custom-tooltip">
+                            <i class="material-icons storage">storage</i>
+                            <span class="dbname">{{dataset.name}}</span>
+                        </div>
+
+                        <div *ngIf="chosenDatasetIndex===index "  class="tables">
+                            <ul class="list-group " [@tableOpenClose]="chosenDatasetIndex === index ? 'open' : 'closed'">
+                                <li *ngFor="let table of tables" class="list-group-item">
+                                    <div class="table-list">
+                                        <div class="table-front">
+                                            <i class="material-icons table_chart">table_chart</i>
+                                            <span class="tableName">{{table.tableName}}</span>
+                                        </div>
+                                        <i class="material-icons ">expand_more</i>
+                                    </div>
+                                    <!-- <div class="columns">
+                                        <ul class="list-group">
+                                            <li *ngFor="let column of table.columnNames" class="list-group-item columnNames">
+                                                {{column}}
+                                            </li>
+                                        </ul>
+                                    </div> -->
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
-           </div>
-            
+
+            </div>
+
+
         </div>
-    
+
+        <div class="saveQuery">
+            
+                <div class="buttondb">
+                    <mat-icon>bookmark</mat-icon>
+                    <span class="text">Saved Queries</span>
+                </div>
+          
+        </div>
+
     </div>
     <div class="main-screen">
         <header>
@@ -31,10 +74,10 @@
                 <div class="overlaying">
                     <div class="userlogo" (click)="toggleOverlay()"><i class="material-icons">person</i></div>
                 </div>
-                
+
             </div>
-            <app-logout   *ngIf="showLogoutOverlay" (logoutClicked)="handleLogout()"></app-logout>
+            <app-logout *ngIf="showLogoutOverlay" (logoutClicked)="handleLogout()"></app-logout>
         </header>
-        
+
     </div>
 </div>

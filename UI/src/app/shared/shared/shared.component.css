@@ -1,6 +1,12 @@
 .screen{
     display: grid;
-    grid-template-columns: 1.7fr 8.3fr;
+    grid-template-columns: 2.0fr 8.0fr;
+    font-family: "MyFont";
+}
+
+h1,h2,h3,h4{
+    margin: 0;
+    padding: 0;
 }
 
 .main-screen{
@@ -39,6 +45,9 @@
 .sidebar{
     background-color:var(--sidebar);
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .sidebar button{
@@ -51,6 +60,10 @@
     font-size: 0.1rem;
 }
 
+.text{
+    font-size: 1rem;
+    margin-left: 1rem;
+}
 .sidebar button:hover{
     background-color:var(--hover);
     border-radius: 50%;
@@ -71,14 +84,20 @@
 }
 
 
-.buttondb .text{
-    font-size: 1rem;
-    margin-left: 1rem;
-}
 
 .sidebar .buttondb:hover{
     background-color: var(--hover);
     color:white;
+}
+
+.databases{
+    z-index: -1;
+}
+
+.databases .text{
+    color: white;
+    margin-bottom: 0;
+    margin-left: 1.7rem;
 }
 
 .list-group{
@@ -87,47 +106,95 @@
 
 
 .list-group-item {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-color: rgb(27, 26, 26) rgb(27, 26, 26) rgb(35, 32, 32) rgb(27, 26, 26);
-    background-color: rgb(27, 26, 26);
-    color: white;
+    padding: 0;
+    background-color: var(--sidebar);
+    border: none;
+    color: var(--font);
     cursor: pointer;
 }
 
-.dropdown-content {
-    min-width: max-content;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 1s;
-}  
-
-.dropdown:hover .dropdown-content{
-    max-height: 200px;
+.list-group-item .front{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0.9rem;
+    background-color: var(--sidebar);
+    
 }
 
-/* 
-.table-section{
-    transition: all 500ms ease-in-out;
-    display: none;
-} */
-
-
-.expandIcon:hover{
-    background-color: rgb(35, 32, 32);
-    border-radius: 50%;
+.front .storage{
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    color: white;
 }
 
-.visible{
-    background-color: red;
-    transition: all 1s ease-in-out;
+.front .dbname{
+    font-size: 0.9rem;
+}
+
+.front:hover{
+    background-color: var(--hover);
+    border-radius: 2rem;
+}
+
+.custom-tooltip{
+    padding: 1rem;
+    text-transform: uppercase;
+}
+
+.list-group-item .selected{
+    background-color: var(--active);
+    border-radius: 2rem;
 }
 
 
 
-/* .list-group-item:hover{
-    background-color: rgb(35, 32, 32);
-    border-radius: 100px;
-    transition: all .3s ease-in-out;
-} */
+.table-front{
+    display: flex;
+    flex-direction: row;
+    /* background-color: red; */
+    padding: 1rem;
+    
+}
 
+.table-front .table_chart{
+    color: var(--font);
+    opacity: 0.8;
+    font-size: 1.2rem;
+}
+
+.table-front .tableName{
+    margin-left: 1rem;
+}
+
+
+.tables .list-group-item{
+    background-color: var(--hover);
+    padding-top: 0.7rem;
+    padding-right: 0.5rem;
+    margin-top: -0.7rem;
+}
+
+.table-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 0.7rem 0.5rem 0 0; */
+    margin-top: -1rem;
+    border-radius: 2rem;
+}
+
+.columns{
+    background-color: black;
+   
+}
+
+.columns .list-group{
+    background-color:black ;
+}
+
+.saveQuery
+{
+    align-items: flex-end   ;
+}

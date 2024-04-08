@@ -1,0 +1,31 @@
+.upload-overlay{
+    background-color: var(--screen);
+    color: var(--font);
+    width: fit-content;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 2rem;
+}
+
+.option{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 1rem;
+}
+
+input{
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.option span{
+    padding: 0.5rem 1rem;
+}
+
+.option span:hover{
+    background-color: var(--hover);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    cursor: pointer;
+}

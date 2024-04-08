@@ -34,9 +34,10 @@ namespace BackendAPI.Controllers
                 return BadRequest("No file uploaded");
             }
 
-
-
-            //var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (!file.FileName.EndsWith(".xls") && !file.FileName.EndsWith(".xlsx"))
+            {
+                return BadRequest("Invalid file format. Please upload an Excel file (.xls or .xlsx).");
+            }
 
             var userIdClaim = User.FindFirst("Id");
 
@@ -111,6 +112,25 @@ namespace BackendAPI.Controllers
             }
         }
 
+        [HttpGet("GetDatasets")]
+        public IActionResult GetDatasets()
+        {
+            var userIdClaim = User.FindFirst("Id");
+
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+            {
+                return BadRequest("Invalid or missing 'UserId' claim");
+            }
+
+            var datasets = _context.Datasets.Where(d=>d.UserId==userId).Select(d => new { d.Id, d.Name, d.UploadedAt }).ToList();
+            if (datasets == null || datasets.Count == 0)
+            {
+                return NotFound("No datasets found for this user");
+            }
+
+            return Ok(datasets);
+        }
+
         private async Task<byte[]> GetFileData(Guid datasetId)
         {
             var dataset = await _context.Datasets.FirstOrDefaultAsync(x => x.Id == datasetId);
@@ -119,6 +139,7 @@ namespace BackendAPI.Controllers
                 return null;
             }
             return System.IO.File.ReadAllBytes(dataset.Location);
+
         }
 
         private List<TableInfo> ParseExcelFile(Stream stream)
