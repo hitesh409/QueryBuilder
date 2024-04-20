@@ -90,14 +90,13 @@ h1,h2,h3,h4{
     color:white;
 }
 
-.databases{
-    z-index: -1;
-}
+
 
 .databases .text{
     color: white;
     margin-bottom: 0;
     margin-left: 1.7rem;
+    font-weight: 500;
 }
 
 .list-group{
@@ -129,7 +128,7 @@ h1,h2,h3,h4{
 }
 
 .front .dbname{
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 .front:hover{
@@ -198,3 +197,11 @@ h1,h2,h3,h4{
 {
     align-items: flex-end   ;
 }
+
+ .dynamic-screen{
+    /* background-color: #C2185B; */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    height: 90vh;
+} 

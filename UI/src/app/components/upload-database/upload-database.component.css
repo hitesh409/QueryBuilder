@@ -2,7 +2,7 @@
     background-color: var(--screen);
     color: var(--font);
     width: fit-content;
-    padding: 1rem;
+    padding: 0.4rem;
     margin: 1rem;
     border-radius: 2rem;
 }

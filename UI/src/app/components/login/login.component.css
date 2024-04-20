@@ -64,4 +64,14 @@
 
 button{
     width: 100%;
+    background-image: linear-gradient(to right, #DA22FF 0%, #9733EE  51%, #DA22FF  100%);
+    transition: 0.5s;
+    background-size: 200% auto;
+    font-weight: 500;
+}
+
+button:hover{
+    background-position: right center; 
+    color: white;
+    text-decoration: none;
 }

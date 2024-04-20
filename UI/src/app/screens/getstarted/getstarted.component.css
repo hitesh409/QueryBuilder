@@ -1,0 +1,49 @@
+.main-container{
+    height: 90vh;
+    width: 80vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "MyFont";
+}
+
+
+.content .first-text{
+    background: linear-gradient(
+        to left,white,#D96570,#BF6A95,violet,#8676D5,#5581EC
+    );
+    background-clip: text;
+    color: transparent;
+    width: fit-content;
+    font-size: 4rem;
+    padding: 2rem;
+    font-weight: 500;
+    letter-spacing: -3px;
+}
+
+.content .second-text{
+    color: #444746;
+    font-size: 4rem;
+    padding: 2rem;
+    font-weight: 500;
+}
+
+.button{
+    margin: 5rem;
+    font-size: 1.5rem;
+    background-image: linear-gradient(to right, #DA22FF 0%, #9733EE  51%, #DA22FF  100%);
+    padding: 1.2rem;
+    transition: 0.5s;
+    background-size: 200% auto;
+    box-shadow: 1px 1px 20px black;
+    border-radius: 5rem;
+    color: var(--font);
+    cursor: pointer;
+}
+
+.button:hover{
+    background-position: right center; /* change the direction of the change here */
+    color: white;
+    text-decoration: none;
+}
