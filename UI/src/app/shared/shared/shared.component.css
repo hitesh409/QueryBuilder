@@ -97,10 +97,12 @@ h1,h2,h3,h4{
     margin-bottom: 0;
     margin-left: 1.7rem;
     font-weight: 500;
+    transition: 0.7s;
 }
 
 .list-group{
     margin: 1rem;
+    transition: 0.7s;
 }
 
 
@@ -110,6 +112,7 @@ h1,h2,h3,h4{
     border: none;
     color: var(--font);
     cursor: pointer;
+    transition: 0.7s;
 }
 
 .list-group-item .front{
@@ -144,6 +147,7 @@ h1,h2,h3,h4{
 .list-group-item .selected{
     background-color: var(--active);
     border-radius: 2rem;
+    transition: 0.7s;
 }
 
 
@@ -198,10 +202,15 @@ h1,h2,h3,h4{
     align-items: flex-end   ;
 }
 
+.displayNode{
+    height:20%;
+    background-color: black;
+}
+
  .dynamic-screen{
     /* background-color: #C2185B; */
     /* display: flex;
     justify-content: center;
     align-items: center; */
-    height: 90vh;
+    height: 70vh;
 } 

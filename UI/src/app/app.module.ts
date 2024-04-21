@@ -19,6 +19,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UploadDatabaseComponent } from './components/upload-database/upload-database.component';
 import { GetstartedComponent } from './screens/getstarted/getstarted.component';
+import { DisplayComponent } from './screens/display/display.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { GetstartedComponent } from './screens/getstarted/getstarted.component';
     LogoutComponent,
     UploadDatabaseComponent,
     GetstartedComponent,
+    DisplayComponent,
     
   ],
   imports: [

@@ -1,0 +1,54 @@
+.display-container{
+    height: 70vh;
+    width: 80vw;
+    display: flex;
+    justify-content:center;
+    align-items: flex-start;
+    flex-direction: column;
+    font-family: "MyFont";
+}
+h1,h2,h3,h4{padding: 0;margin: 0;}
+.content{
+    margin-left: 25vw;
+}
+.options{
+    position: absolute;
+    background-color: var(--card);
+    color: var(--font);
+    padding: 2rem;
+    border-radius: 4rem;
+    transition: 0.7s;
+    cursor: pointer;
+    width: 15rem;
+    text-align: center;
+    scale: 0;
+    
+}
+
+.options:hover{
+    background-color: var(--hover);
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.15);
+}
+
+.active{
+    transform: translate(15rem,calc(var(--i)*10rem));
+    scale: 1;
+}
+
+.display{
+    background-color: var(--active);
+    color: var(--font);
+    padding: 1.5rem;
+    border-radius: 2.5rem;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.display:hover{
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.25);
+    color: white;
+}
+
+.display:active{
+    background-color: var(--active);
+}

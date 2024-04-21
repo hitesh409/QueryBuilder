@@ -78,8 +78,12 @@
             </div>
             <app-logout *ngIf="showLogoutOverlay" (logoutClicked)="handleLogout()"></app-logout>
         </header>
+        <div class="displayNode">
+
+        </div>
         <div class="dynamic-screen">
-            <app-getstarted></app-getstarted>
+            <!-- <app-getstarted></app-getstarted> -->
+            <app-display></app-display>
         </div>
     </div>
 </div>
