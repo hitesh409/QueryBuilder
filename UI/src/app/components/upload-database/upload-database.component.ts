@@ -4,11 +4,20 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { DatasetService } from '../../services/dataset-service/dataset.service';
 import { Router } from '@angular/router';
 import { DatasetModel } from '../../models/dataset-model';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-upload-database',
   templateUrl: './upload-database.component.html',
-  styleUrl: './upload-database.component.css'
+  styleUrl: './upload-database.component.css',
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0
+      })),
+      transition('void <=> *', animate('0.7s ease')), 
+    ])
+  ]
 })
 export class UploadDatabaseComponent {
 

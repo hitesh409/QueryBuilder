@@ -1,0 +1,82 @@
+<div class="main-container">
+    <div class="header-content">
+        <h1>Table selection</h1>
+    </div>
+    <div class="main-content">
+
+        <div class="dynamic-content" [ngClass]="{'disabled': !isEditable}" > 
+            <div class="table-selection option">
+                <mat-form-field>
+                    <mat-label>Select Table</mat-label>
+                    <mat-select [(value)]="table">
+                        @for (table of tables; track table) {
+                        <mat-option [value]="table">{{table.tableName}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div [@fadeInOut] class="column-selection option" *ngIf="table!=null">
+                <h3>Select Columns:</h3>
+                    <div class="checkbox-list">
+                        <mat-checkbox *ngFor="let column of table.columnNames" [checked]="selectedColumns.includes(column)"
+                            (change)="toggleCheckBox(column,$event)" color="accent">
+                            {{column}}
+                        </mat-checkbox>
+                    </div>
+            </div>
+    
+            <div [@fadeInOut] class="agg-selection option" >
+                <ng-container *ngFor="let slot of slotList; let i = index">
+                    <div [@fadeInOut]  class="slot">
+                        <mat-form-field class="agg-function div">
+                            <mat-label>Select aggregate functions:</mat-label>
+                            <mat-select [(value)]="slot.selectedAggregateFunction">
+                                @for (aggregate of aggregateFunctions;track aggregate) {
+                                <mat-option [value]="aggregate.value">{{aggregate.viewValue}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="agg-column div">
+                            <mat-label>Select column for aggregate function:</mat-label>
+                            <mat-select [(value)]="slot.selectedColumn">
+                                @for (column of table?.columnNames;track column) {
+                                <mat-option [value]="column">{{column}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="add-remove-slot">
+                        <mat-icon *ngIf="i!=0" (click)="removeSlot(i)" style="cursor: pointer;border-radius: 50%;">remove</mat-icon>
+                        <hr style="width: 90%;height: 2px;background-color: black;">
+                        <mat-icon (click)="addSlot()" style="cursor: pointer;border-radius: 50%;">add</mat-icon>
+                    </div>  
+                </ng-container>
+            </div> 
+        </div>
+
+        <div class="confirm-buttons">
+            <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
+            matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
+                <i class="material-icons">undo</i>
+            </button> 
+            <button mat-icon-button class="check" [disabled]="!(table && (selectedColumns.length!=0 || hasSelectedAggrAndColumns())) || isChecked" (click)="getQuery()">
+                <i class="material-icons">check</i>
+            </button>
+              
+        </div>
+            
+    </div>
+    <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
+        <div class="next-options">
+            <div class="next button" (click)="toggleOptionExpanded()">Next</div>
+            <div class="divider"></div>
+            <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
+                <div class="list">Condition</div>
+                <div class="list">Condition</div>
+            </div>
+        </div>
+        
+        <div class="runQuery button">Preview</div>
+    </div>
+</div>

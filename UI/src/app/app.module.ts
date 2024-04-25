@@ -20,6 +20,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UploadDatabaseComponent } from './components/upload-database/upload-database.component';
 import { GetstartedComponent } from './screens/getstarted/getstarted.component';
 import { DisplayComponent } from './screens/display/display.component';
+import { TableScreenComponent } from './screens/table-screen/table-screen.component';
+import {MatSelectModule} from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -31,6 +34,7 @@ import { DisplayComponent } from './screens/display/display.component';
     UploadDatabaseComponent,
     GetstartedComponent,
     DisplayComponent,
+    TableScreenComponent,
     
   ],
   imports: [
@@ -46,7 +50,9 @@ import { DisplayComponent } from './screens/display/display.component';
     MatIconModule,
     MatTooltipModule,
     ScrollingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [
     provideAnimationsAsync()

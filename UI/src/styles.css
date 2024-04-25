@@ -5,9 +5,10 @@
     --hover : #282A2C;
     --card : #1E1F20;
     --font : #E3E3D8;
-    --active:#004A77;
+    --active:#007ACC;
     --overlay:#1E1F20;
 }
+
 @font-face {
     font-family: 'MyFont';
     src: url('../src/assets/fonts/NotoSans-VariableFont_wdth\,wght.ttf');

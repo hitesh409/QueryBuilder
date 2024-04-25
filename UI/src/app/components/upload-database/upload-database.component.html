@@ -1,4 +1,4 @@
-<div *ngIf="showUploadOverlay" class="upload-overlay">
+<div [@fadeInOut] *ngIf="showUploadOverlay" class="upload-overlay">
     <input type="file" (change)="onFileSelected($event)">
     <div class="option">
         <span class="upload" (click)="uploadDataset()">Upload</span>
