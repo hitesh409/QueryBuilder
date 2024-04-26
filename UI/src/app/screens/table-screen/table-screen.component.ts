@@ -31,17 +31,18 @@ interface slotist {
 })
 export class TableScreenComponent {
   @Input() tables: TableModel[] = [];
-  @Output() selectedTable: EventEmitter<TableModel> =
-    new EventEmitter<TableModel>();
+  @Output() selectedTable: EventEmitter<TableModel[]> =
+    new EventEmitter<TableModel[]>();
 
   generatedQuery: string = '';
-  slotList: any[] = [{ selectedAggregateFunction: null, selectedColumn: null }];
+  slotList: slotist[] = [{ selectedAggregateFunction: null, selectedColumn: null }];
   table: TableModel | null = null;
   selectedColumns: string[] = [];
   selectedAggr: string[] = [];
   isChecked: boolean = false;
   isEditable: boolean = true;
   isOptionExpanded: boolean = false;
+  tableArray:TableModel[]=[] ;
 
   aggregateFunctions = [
     { value: 'SUM', viewValue: 'Sum' },
@@ -52,7 +53,8 @@ export class TableScreenComponent {
   ];
 
   onTableSelected(table: TableModel) {
-    this.selectedTable.emit(table);
+    this.tableArray.push(table);
+    this.selectedTable.emit(this.tableArray);
   }
 
   toggleCheckBox(column: string, event: any) {

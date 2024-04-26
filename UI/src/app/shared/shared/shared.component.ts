@@ -61,9 +61,9 @@ export class SharedComponent implements OnInit {
     );
   }
 
-  onTableSelected(table:TableModel){
+  onTableSelected(table:TableModel[]){
     if(table){
-      this.tableArray.push(table);
+      this.tableArray = table;
     }
   }
 
@@ -77,6 +77,7 @@ export class SharedComponent implements OnInit {
         this.errorMessage = error.message;
       }
     );
+    console.log(this.tableArray)
   }
 
   toggleDatasetSelection(index: number) {
