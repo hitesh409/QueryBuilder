@@ -9,7 +9,7 @@ import {
 } from '@angular/animations';
 
 interface slotist {
-  selectedAggregateFunction: string | null ;
+  selectedAggregateFunction: string | null;
   selectedColumn: string | null;
 }
 
@@ -31,18 +31,24 @@ interface slotist {
 })
 export class TableScreenComponent {
   @Input() tables: TableModel[] = [];
-  @Output() selectedTable: EventEmitter<TableModel[]> =
-    new EventEmitter<TableModel[]>();
+  @Output() selectedTable: EventEmitter<TableModel[]> = new EventEmitter<
+    TableModel[]
+  >();
+  @Output() AggregateList: EventEmitter<string[]> = new EventEmitter<
+    string[]
+  >();
 
   generatedQuery: string = '';
-  slotList: slotist[] = [{ selectedAggregateFunction: null, selectedColumn: null }];
+  slotList: slotist[] = [
+    { selectedAggregateFunction: null, selectedColumn: null },
+  ];
   table: TableModel | null = null;
   selectedColumns: string[] = [];
   selectedAggr: string[] = [];
   isChecked: boolean = false;
   isEditable: boolean = true;
   isOptionExpanded: boolean = false;
-  tableArray:TableModel[]=[] ;
+  tableArray: TableModel[] = [];
 
   aggregateFunctions = [
     { value: 'SUM', viewValue: 'Sum' },
@@ -55,6 +61,10 @@ export class TableScreenComponent {
   onTableSelected(table: TableModel) {
     this.tableArray.push(table);
     this.selectedTable.emit(this.tableArray);
+  }
+
+  onAggragateSelected(){
+    this.AggregateList.emit(this.selectedAggr);
   }
 
   toggleCheckBox(column: string, event: any) {
@@ -105,6 +115,7 @@ export class TableScreenComponent {
     if (this.selectedAggr.length != 0) {
       const aggString = this.selectedAggr.join(', ');
       this.generatedQuery += aggString;
+      this.onAggragateSelected();
     }
 
     if (this.selectedColumns.length != 0) {
@@ -114,6 +125,8 @@ export class TableScreenComponent {
       }
       this.generatedQuery += columns;
     }
+
+    
 
     this.generatedQuery += ` from ${this.table?.tableName}`;
 
