@@ -33,6 +33,7 @@ export class SharedComponent implements OnInit {
   overlayRef: OverlayRef | null = null;
   errorMessage: string | null = null;
   tableArray: TableModel[] = [];
+  aggregateFunctions : string[] = [];
 
   constructor(private datasetService: DatasetService) {}
   ngOnInit(): void {
@@ -67,6 +68,11 @@ export class SharedComponent implements OnInit {
     }
   }
 
+  onAggragateSelected(agg:string[]){
+    if(agg)
+      this.aggregateFunctions = agg;
+  }
+
   getTables(datasetId: string) {
     this.datasetService.getTables(datasetId).subscribe(
       (tables) => {
@@ -77,7 +83,8 @@ export class SharedComponent implements OnInit {
         this.errorMessage = error.message;
       }
     );
-    console.log(this.tableArray)
+    console.log(this.tableArray);
+    console.log(this.aggregateFunctions)
   }
 
   toggleDatasetSelection(index: number) {

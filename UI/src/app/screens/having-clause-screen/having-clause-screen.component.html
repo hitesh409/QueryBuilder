@@ -1,0 +1,92 @@
+<div class="main-container">
+    <div class="header-content">
+        <h1>Condition selection</h1>
+    </div>
+    <div class="main-content">
+
+        <div class="dynamic-content"[ngClass]="{'disabled': !isEditable}">
+
+            <div class="condition-selection">
+                <ng-container *ngFor="let slot of slotList;let i = index">
+                    <div class="slot">
+
+                        <div *ngIf="i!=0" class="option">
+                            <mat-form-field>
+                                <mat-label>AND / OR</mat-label>
+                                <mat-select [(value)]="slot.logical">
+
+                                    <mat-option value="AND">AND</mat-option>
+                                    <mat-option value="OR">OR</mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+
+                        <div class="option">
+                            <mat-form-field>
+                                <mat-label>Select Aggreagte column</mat-label>
+                                <mat-select [(value)]="slot.column">
+                                    @for (column of aggFuns; track column) {
+                                    <mat-option [value]="column">{{column}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="option">
+                            <mat-form-field>
+                                <mat-label>Select operator</mat-label>
+                                <mat-select [(value)]="slot.operator">
+                                    @for (operator of operators; track operator) {
+                                    <mat-option [value]="operator.value">{{operator.viewValue}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                            <div class="option">
+                                <mat-form-field>
+                                    <mat-label>Enter value</mat-label>
+                                    <input matInput [(ngModel)]="slot.value">
+                                </mat-form-field>
+                            </div>
+                    </div>
+                    <div class="add-remove-slot">
+                        <mat-icon *ngIf="i!=0" matTooltip="Remove condition" matTooltipPosition="left" (click)="removeSlot(i)"
+                            style="cursor: pointer;border-radius: 50%;">remove</mat-icon>
+                        <hr style="width: 90%;height: 2px;background-color: black;">
+                        <mat-icon matTooltip="Add more condition" matTooltipPosition="right" (click)="addSlot()" style="cursor: pointer;border-radius: 50%;">add</mat-icon>
+                    </div>
+                </ng-container>
+
+            </div>
+
+
+
+
+        </div>
+
+        <div class="confirm-buttons">
+            <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
+                matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
+                <i class="material-icons">undo</i>
+            </button>
+            <button mat-icon-button class="check" [disabled]="!allFieldsFilled() || isChecked" (click)="getQuery()">
+                <i class="material-icons">check</i>
+            </button>
+
+        </div>
+    </div>
+    <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
+        <div class="next-options">
+            <div class="next button" (click)="toggleOptionExpanded()">Next</div>
+            <div class="divider"></div>
+            <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
+                <div class="list">Order BY</div>
+            </div>
+        </div>
+
+        <div class="runQuery button">Preview</div>
+    </div>
+</div>

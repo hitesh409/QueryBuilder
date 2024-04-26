@@ -26,6 +26,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CoditionScreenComponent } from './screens/codition-screen/codition-screen.component';
 import { OrderByScreenComponent } from './screens/order-by-screen/order-by-screen.component';
 import { GroupByScreenComponent } from './screens/group-by-screen/group-by-screen.component';
+import { HavingClauseScreenComponent } from './screens/having-clause-screen/having-clause-screen.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { GroupByScreenComponent } from './screens/group-by-screen/group-by-scree
     CoditionScreenComponent,
     OrderByScreenComponent,
     GroupByScreenComponent,
+    HavingClauseScreenComponent,
     
   ],
   imports: [
