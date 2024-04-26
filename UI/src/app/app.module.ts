@@ -23,6 +23,7 @@ import { DisplayComponent } from './screens/display/display.component';
 import { TableScreenComponent } from './screens/table-screen/table-screen.component';
 import {MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CoditionScreenComponent } from './screens/codition-screen/codition-screen.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     GetstartedComponent,
     DisplayComponent,
     TableScreenComponent,
+    CoditionScreenComponent,
     
   ],
   imports: [

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, output } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import {
   trigger,
@@ -7,6 +7,11 @@ import {
   transition,
   animate,
 } from '@angular/animations';
+
+interface slotist {
+  selectedAggregateFunction: string | null ;
+  selectedColumn: string | null;
+}
 
 @Component({
   selector: 'app-table-screen',
@@ -26,6 +31,8 @@ import {
 })
 export class TableScreenComponent {
   @Input() tables: TableModel[] = [];
+  @Output() selectedTable: EventEmitter<TableModel> =
+    new EventEmitter<TableModel>();
 
   generatedQuery: string = '';
   slotList: any[] = [{ selectedAggregateFunction: null, selectedColumn: null }];
@@ -44,6 +51,10 @@ export class TableScreenComponent {
     { value: 'MAX', viewValue: 'Maximum' },
   ];
 
+  onTableSelected(table: TableModel) {
+    this.selectedTable.emit(table);
+  }
+
   toggleCheckBox(column: string, event: any) {
     if (event.checked) {
       this.selectedColumns.push(column);
@@ -51,7 +62,6 @@ export class TableScreenComponent {
       const index = this.selectedColumns.indexOf(column);
       if (index >= 0) this.selectedColumns.splice(index, 1);
     }
-    console.log('slotlist', this.slotList[0]);
   }
 
   hasSelectedAggrAndColumns(): boolean {

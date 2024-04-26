@@ -84,7 +84,8 @@
         <div class="dynamic-screen">
             <!-- <app-getstarted></app-getstarted> -->
             <!-- <app-display></app-display> -->
-            <app-table-screen [tables]="tables"></app-table-screen>
+            <!-- <app-table-screen [tables]="tables" (selectedTable)="onTableSelected($event)"></app-table-screen> -->
+            <app-codition-screen [tableArray]="tableArray"></app-codition-screen>
         </div>
     </div>
 </div>

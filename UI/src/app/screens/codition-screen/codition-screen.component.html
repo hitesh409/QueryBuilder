@@ -1,0 +1,126 @@
+<div class="main-container">
+    <div class="header-content">
+        <h1>Condition selection</h1>
+    </div>
+    <div class="main-content">
+
+        <div class="dynamic-content"[ngClass]="{'disabled': !isEditable}">
+
+            <div class="condition-selection">
+                <ng-container *ngFor="let slot of slotList;let i = index">
+                    <div class="slot">
+
+                        <div *ngIf="i!=0" class="option">
+                            <mat-form-field>
+                                <mat-label>AND / OR</mat-label>
+                                <mat-select [(value)]="slot.logical">
+
+                                    <mat-option value="AND">AND</mat-option>
+                                    <mat-option value="OR">OR</mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+
+                        <div class="option">
+                            <mat-form-field>
+                                <mat-label>Select column</mat-label>
+                                <mat-select [(value)]="slot.column">
+                                    @for (column of columns; track column) {
+                                    <mat-option [value]="column">{{column}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="option">
+                            <mat-form-field>
+                                <mat-label>Select operator</mat-label>
+                                <mat-select [(value)]="slot.operator">
+                                    @for (operator of operators; track operator) {
+                                    <mat-option [value]="operator.value">{{operator.viewValue}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="option" *ngIf="slot.operator==='LIKE'">
+                            <mat-form-field>
+                                <mat-label>Select pattern</mat-label>
+                                <mat-select [(value)]="slot.patternType">
+                                    
+                                    <mat-option value="0">Starts with...</mat-option>
+                                    <mat-option value="1">Ends with...</mat-option>
+                                    <mat-option value="2">Contains...</mat-option>
+                
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <ng-container
+                            *ngIf="slot.operator =='BETWEEN' || slot.operator === 'NOT BETWEEN' ; then doubleValue  ; else singleValue">
+
+                        </ng-container>
+
+                        <ng-template #singleValue>
+                            <div class="option">
+                                <mat-form-field>
+                                    <mat-label>Enter value</mat-label>
+                                    <input matInput [(ngModel)]="slot.firstValue">
+                                </mat-form-field>
+                            </div>
+                        </ng-template>
+
+                        <ng-template #doubleValue>
+                            <div [@fadeInOut] class="value-selection double-valued option">
+                                <mat-form-field>
+                                    <mat-label>Enter first value</mat-label>
+                                    <input matInput [(ngModel)]="slot.firstValue">
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Enter second value</mat-label>
+                                    <input matInput [(ngModel)]="slot.secondValue">
+                                </mat-form-field>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="add-remove-slot">
+                        <mat-icon *ngIf="i!=0" matTooltip="Remove condition" matTooltipPosition="left" (click)="removeSlot(i)"
+                            style="cursor: pointer;border-radius: 50%;">remove</mat-icon>
+                        <hr style="width: 90%;height: 2px;background-color: black;">
+                        <mat-icon matTooltip="Add more condition" matTooltipPosition="right" (click)="addSlot()" style="cursor: pointer;border-radius: 50%;">add</mat-icon>
+                    </div>
+                </ng-container>
+
+            </div>
+
+
+
+
+        </div>
+
+        <div class="confirm-buttons">
+            <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
+                matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
+                <i class="material-icons">undo</i>
+            </button>
+            <button mat-icon-button class="check" [disabled]="!allFieldsFilled() || isChecked" (click)="getQuery()">
+                <i class="material-icons">check</i>
+            </button>
+
+        </div>
+    </div>
+    <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
+        <div class="next-options">
+            <div class="next button" (click)="toggleOptionExpanded()">Next</div>
+            <div class="divider"></div>
+            <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
+                <div class="list">Order BY</div>
+                <div class="list">Group BY</div>
+            </div>
+        </div>
+
+        <div class="runQuery button">Preview</div>
+    </div>
+</div>

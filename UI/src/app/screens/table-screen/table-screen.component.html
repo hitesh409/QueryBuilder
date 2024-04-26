@@ -8,7 +8,7 @@
             <div class="table-selection option">
                 <mat-form-field>
                     <mat-label>Select Table</mat-label>
-                    <mat-select [(value)]="table">
+                    <mat-select [(value)]="table"  (selectionChange)="onTableSelected($event.value)">
                         @for (table of tables; track table) {
                         <mat-option [value]="table">{{table.tableName}}</mat-option>
                         }

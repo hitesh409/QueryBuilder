@@ -32,6 +32,8 @@ export class SharedComponent implements OnInit {
   tables: TableModel[] = [];
   overlayRef: OverlayRef | null = null;
   errorMessage: string | null = null;
+  tableArray: TableModel[] = [];
+
   constructor(private datasetService: DatasetService) {}
   ngOnInit(): void {
     this.fetchDatasets();
@@ -57,6 +59,12 @@ export class SharedComponent implements OnInit {
         this.errorMessage = error.message;
       }
     );
+  }
+
+  onTableSelected(table:TableModel){
+    if(table){
+      this.tableArray.push(table);
+    }
   }
 
   getTables(datasetId: string) {
