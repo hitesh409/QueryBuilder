@@ -25,6 +25,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CoditionScreenComponent } from './screens/codition-screen/codition-screen.component';
 import { OrderByScreenComponent } from './screens/order-by-screen/order-by-screen.component';
+import { GroupByScreenComponent } from './screens/group-by-screen/group-by-screen.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { OrderByScreenComponent } from './screens/order-by-screen/order-by-scree
     TableScreenComponent,
     CoditionScreenComponent,
     OrderByScreenComponent,
+    GroupByScreenComponent,
     
   ],
   imports: [
