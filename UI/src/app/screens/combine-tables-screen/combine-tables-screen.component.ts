@@ -30,6 +30,7 @@ interface Slotist {
 export class CombineTablesScreenComponent {
   @Input() tables: TableModel[] = [];
   @Output() selectedTable: EventEmitter<TableModel[]> = new EventEmitter<TableModel[]>();
+  @Output() generatedSubQuery: EventEmitter<string> = new EventEmitter<string>();
   tooltipText1: string = "Select Matching Column from left Table";
   tooltipText2: string = "Select Matching Column from right Table";
   valueSelected1: boolean = false;
@@ -164,6 +165,7 @@ export class CombineTablesScreenComponent {
     this.isChecked = true;
     this.isEditable = false;
     this.onEmitTable();
+    this.generatedSubQuery.emit(this.generatedQuery);
     console.log('Query: ', this.generatedQuery);
   }
 

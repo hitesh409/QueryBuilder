@@ -33,6 +33,7 @@ export class SharedComponent implements OnInit {
   overlayRef: OverlayRef | null = null;
   errorMessage: string | null = null;
   tableArray: TableModel[] = [];
+  subQuery: string | null = null;
   aggregateFunctions : string[] = [];
 
   constructor(private datasetService: DatasetService) {}
@@ -68,6 +69,12 @@ export class SharedComponent implements OnInit {
     }
   }
 
+  onSubQueryGenerated(subQuery:string){
+    if(subQuery){
+      this.subQuery = subQuery;
+    }
+  }
+
   onAggragateSelected(agg:string[]){
     if(agg)
       this.aggregateFunctions = agg;
@@ -85,6 +92,7 @@ export class SharedComponent implements OnInit {
     );
     console.log("TableArray: ",this.tableArray);
     console.log("AggregateFunction: ",this.aggregateFunctions)
+    console.log("subQuery: ",this.subQuery);
   }
 
   toggleDatasetSelection(index: number) {
