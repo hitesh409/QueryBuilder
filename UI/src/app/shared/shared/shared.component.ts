@@ -83,8 +83,8 @@ export class SharedComponent implements OnInit {
         this.errorMessage = error.message;
       }
     );
-    console.log(this.tableArray);
-    console.log(this.aggregateFunctions)
+    console.log("TableArray: ",this.tableArray);
+    console.log("AggregateFunction: ",this.aggregateFunctions)
   }
 
   toggleDatasetSelection(index: number) {

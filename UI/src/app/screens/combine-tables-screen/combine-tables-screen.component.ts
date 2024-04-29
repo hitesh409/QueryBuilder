@@ -30,7 +30,6 @@ interface Slotist {
 export class CombineTablesScreenComponent {
   @Input() tables: TableModel[] = [];
   @Output() selectedTable: EventEmitter<TableModel[]> = new EventEmitter<TableModel[]>();
-  @Output() AggregateList: EventEmitter<string[]> = new EventEmitter<string[]>();
   tooltipText1: string = "Select Matching Column from left Table";
   tooltipText2: string = "Select Matching Column from right Table";
   valueSelected1: boolean = false;
@@ -71,7 +70,6 @@ export class CombineTablesScreenComponent {
   isChecked: boolean = false;
   isEditable: boolean = true;
   isOptionExpanded: boolean = false;
-  isExpanded : boolean = false;
   tableArray: TableModel[] = [];
   leftMostTable : TableModel | null = null;
 
@@ -98,32 +96,8 @@ export class CombineTablesScreenComponent {
     }
   }
 
-  onAggragateSelected(){
-    this.AggregateList.emit(this.selectedAggr);
-  }
-
-  toggleCheckBox(column: string, event: any) {
-    if (event.checked) {
-      this.selectedColumns.push(column);
-    } else {
-      const index = this.selectedColumns.indexOf(column);
-      if (index >= 0) this.selectedColumns.splice(index, 1);
-    }
-  }
-
-  toggleExpansion(){
-    this.isExpanded = !this.isExpanded
-  }
-
-  hasSelectedAggrAndColumns(): boolean {
-    return this.slotList.some(
-      (slot) =>
-        slot.joinType &&
-        slot.rightTable &&
-        slot.selectedColumn &&
-        slot.basedOnCondition1 &&
-        slot.basedOncondition2
-    );
+  onEmitTable(){
+    this.selectedTable.emit(this.tableArray);
   }
 
   reset() {
@@ -189,6 +163,7 @@ export class CombineTablesScreenComponent {
 
     this.isChecked = true;
     this.isEditable = false;
+    this.onEmitTable();
     console.log('Query: ', this.generatedQuery);
   }
 
