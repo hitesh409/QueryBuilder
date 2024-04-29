@@ -91,6 +91,16 @@ h1,h2,h3,h4{
 }
 
 
+.databases{
+    max-height: 60vh;
+
+}
+
+.databases ul{
+    max-height: 60vh;
+    overflow-y: scroll;
+}
+
 
 .databases .text{
     color: white;

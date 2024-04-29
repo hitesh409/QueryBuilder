@@ -27,6 +27,7 @@ import { CoditionScreenComponent } from './screens/codition-screen/codition-scre
 import { OrderByScreenComponent } from './screens/order-by-screen/order-by-screen.component';
 import { GroupByScreenComponent } from './screens/group-by-screen/group-by-screen.component';
 import { HavingClauseScreenComponent } from './screens/having-clause-screen/having-clause-screen.component';
+import { CombineTablesScreenComponent } from './screens/combine-tables-screen/combine-tables-screen.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { HavingClauseScreenComponent } from './screens/having-clause-screen/havi
     OrderByScreenComponent,
     GroupByScreenComponent,
     HavingClauseScreenComponent,
+    CombineTablesScreenComponent,
     
   ],
   imports: [

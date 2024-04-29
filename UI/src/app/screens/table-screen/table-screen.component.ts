@@ -90,6 +90,7 @@ export class TableScreenComponent {
     this.selectedAggr = [];
     this.isChecked = false;
     this.isEditable = true;
+    this.tableArray = [];
   }
 
   addSlot() {

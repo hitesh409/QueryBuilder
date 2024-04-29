@@ -1,0 +1,112 @@
+<div class="main-container">
+    <div class="header-content">
+        <h1>Combine Tables</h1>
+    </div>
+    <div class="main-content">
+
+        <div class="dynamic-content" [ngClass]="{'disabled': !isEditable}">
+
+            <div class="join-selection">
+                <ng-container *ngFor="let slot of slotList;let i = index">
+                    <div class="slot">
+
+                        <div *ngIf="i==0" class="option">
+                            <mat-form-field>
+                                <mat-label>Select Left Table</mat-label>
+                                <mat-select [(value)]="leftMostTable" (selectionChange)="onTableSelected($event.value)">
+                                    @for (table of tables; track table) {
+                                    <mat-option [value]="table">{{table.tableName}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="option">
+                            <mat-form-field>
+                                <mat-label>Select JOIN</mat-label>
+                                <mat-select [(value)]="slot.joinType">
+                                    @for (join of joins; track join) {
+                                    <mat-option [value]="join.value">{{join.viewValue}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="option">
+                            <mat-form-field>
+                                <mat-label>Select Right Table</mat-label>
+                                <mat-select [(value)]="slot.rightTable" (selectionChange)="onTableSelected($event.value)">
+                                    @for (table of tables; track table) {
+                                    <mat-option [value]="table">{{table.tableName}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div [@fadeInOut] class="option" *ngIf="slot.rightTable">
+                            <mat-form-field [matTooltip]="tooltipText1" matTooltipPosition="below" matTooltipClass="custom-tooltip">
+                                <mat-label>Select column</mat-label>
+                                <mat-select [(value)]="slot.basedOnCondition1" #selectBox1>
+                                    <ng-container *ngFor="let table of tableArray.slice(0, tableArray.length - 1); let i = index">
+                                        <ng-container *ngFor="let columnName of table.columnNames">
+                                            <mat-option [value]="table.tableName +'.' + columnName">{{table.tableName}}.{{ columnName }}</mat-option>
+                                        </ng-container>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        
+                        
+
+                        <div [@fadeInOut] class="option" *ngIf="slot.rightTable">
+                            <mat-form-field [matTooltip]="tooltipText2" matTooltipPosition="below"  matTooltipClass="custom-tooltip" >
+                                <mat-label>Select column</mat-label>
+                                <mat-select [(value)]="slot.basedOncondition2" #selectBox2>
+                                    @for (column of slot.rightTable.columnNames; track column) {
+                                    <mat-option [value]="slot.rightTable.tableName + '.' + column">{{ column }}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        
+
+
+                    </div>
+                    <div class="add-remove-slot">
+                        <mat-icon *ngIf="i!=0" matTooltip="Remove condition" matTooltipPosition="left"
+                            (click)="removeSlot(i)" style="cursor: pointer;border-radius: 50%;">remove</mat-icon>
+                        <hr style="width: 95%;height: 2px;background-color: black;">
+                        <mat-icon matTooltip="Add more condition" matTooltipPosition="right" (click)="addSlot()"
+                            style="cursor: pointer;border-radius: 50%;">add</mat-icon>
+                    </div>
+                </ng-container>
+
+            </div>
+
+        </div>
+
+        <div class="confirm-buttons">
+            <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
+                matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
+                <i class="material-icons">undo</i>
+            </button>
+            <button mat-icon-button class="check" [disabled]="!allFieldsFilled() || isChecked" (click)="getQuery()">
+                <i class="material-icons">check</i>
+            </button>
+
+        </div>
+
+    </div>
+    <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
+        <div class="next-options">
+            <div class="next button" (click)="toggleOptionExpanded()">Next</div>
+            <div class="divider"></div>
+            <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
+                <div class="list">Display Column</div>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
