@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DatasetService } from '../../services/dataset-service/dataset.service';
 import { DatasetModel, TableModel } from '../../models/dataset-model';
-import { OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -36,7 +36,7 @@ export class SharedComponent implements OnInit {
   subQuery: string | null = null;
   aggregateFunctions : string[] = [];
 
-  constructor(private datasetService: DatasetService) {}
+  constructor(private datasetService: DatasetService,private overlay : Overlay) {}
   ngOnInit(): void {
     this.fetchDatasets();
   }

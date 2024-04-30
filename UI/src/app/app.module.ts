@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import {OverlayModule} from '@angular/cdk/overlay'; 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -28,6 +28,7 @@ import { OrderByScreenComponent } from './screens/order-by-screen/order-by-scree
 import { GroupByScreenComponent } from './screens/group-by-screen/group-by-screen.component';
 import { HavingClauseScreenComponent } from './screens/having-clause-screen/having-clause-screen.component';
 import { CombineTablesScreenComponent } from './screens/combine-tables-screen/combine-tables-screen.component';
+import { DisplayColumnsScreenComponent } from './screens/display-columns-screen/display-columns-screen.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { CombineTablesScreenComponent } from './screens/combine-tables-screen/co
     GroupByScreenComponent,
     HavingClauseScreenComponent,
     CombineTablesScreenComponent,
+    DisplayColumnsScreenComponent,
     
   ],
   imports: [
@@ -62,7 +64,8 @@ import { CombineTablesScreenComponent } from './screens/combine-tables-screen/co
     ScrollingModule,
     BrowserAnimationsModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    OverlayModule
   ],
   providers: [
     provideAnimationsAsync()
