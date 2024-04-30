@@ -21,7 +21,7 @@
             matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
                 <i class="material-icons">undo</i>
             </button> 
-            <button mat-icon-button class="check" [disabled]="!selectedColumn" (click)="getQuery()">
+            <button mat-icon-button class="check" [disabled]="!selectedColumn || isChecked " (click)="getQuery()">
                 <i class="material-icons">check</i>
             </button>
               
@@ -29,7 +29,7 @@
     </div>
 
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
-        <div class="runQuery button">Preview</div>
+        <div class="runQuery button" (click)="preview()">Preview</div>
     </div>
 
 </div>

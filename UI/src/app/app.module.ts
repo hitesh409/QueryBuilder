@@ -29,6 +29,8 @@ import { GroupByScreenComponent } from './screens/group-by-screen/group-by-scree
 import { HavingClauseScreenComponent } from './screens/having-clause-screen/having-clause-screen.component';
 import { CombineTablesScreenComponent } from './screens/combine-tables-screen/combine-tables-screen.component';
 import { DisplayColumnsScreenComponent } from './screens/display-columns-screen/display-columns-screen.component';
+import { QueryOverlayComponent } from './overlays/query-overlay/query-overlay.component';
+import { MatTableModule } from '@angular/material/table';
 
 
 @NgModule({
@@ -47,6 +49,8 @@ import { DisplayColumnsScreenComponent } from './screens/display-columns-screen/
     HavingClauseScreenComponent,
     CombineTablesScreenComponent,
     DisplayColumnsScreenComponent,
+    QueryOverlayComponent,
+    
     
   ],
   imports: [
@@ -65,7 +69,8 @@ import { DisplayColumnsScreenComponent } from './screens/display-columns-screen/
     BrowserAnimationsModule,
     MatSelectModule,
     MatCheckboxModule,
-    OverlayModule
+    OverlayModule,
+    MatTableModule
   ],
   providers: [
     provideAnimationsAsync()

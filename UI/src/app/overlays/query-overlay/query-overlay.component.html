@@ -1,0 +1,37 @@
+<div class="main-container">
+    <div class="close">
+        <h3>Preview Query</h3>
+        <button mat-icon-button>
+            <i class="material-icons" style="color: white;">close</i>
+        </button>
+    </div>
+    <div class="query-div">
+        <div class="query">
+            <code>SELECT <span class="text"> Id, Name, Weight, Symbol</span> FROM <span class="text">Periodic</span>  WHERE <span class="text">Id</span> < <span class="text">17</span></code>
+        </div>
+        <div class="run">
+            RUN
+        </div>
+
+    </div>
+    <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Weight</th>
+              <th>Symbol</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let element of data">
+              <td>{{ element.position }}</td>
+              <td>{{ element.name }}</td>
+              <td>{{ element.weight }}</td>
+              <td>{{ element.symbol }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+</div>

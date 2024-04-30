@@ -1,6 +1,9 @@
 import { Component, Input, input } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
 
 @Component({
   selector: 'app-order-by-screen',
@@ -27,6 +30,27 @@ export class OrderByScreenComponent {
   isChecked: boolean = false;
   isEditable: boolean = true;
   isOptionExpanded: boolean = false;
+
+  constructor(private overlay : Overlay){}
+
+  preview(){
+    const overlayRef = this.overlay.create({
+      // height:"90vh",
+      // width:"90vw",
+      positionStrategy: this.overlay.position()
+        .global()
+        .centerHorizontally() // Center horizontally
+        .centerVertically(),
+      hasBackdrop: true,
+      backdropClass: 'dark-backdrop',
+      panelClass: 'overlay-panel'
+    })
+    overlayRef.backdropClick().subscribe(() => {
+      overlayRef.dispose();
+    });
+    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
+    overlayRef.attach(queryOverlayRef);
+  }
 
   reset() {
     this.generatedQuery = '';
