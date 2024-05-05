@@ -1,14 +1,14 @@
 <div class="display-container">
     <div class="content">
         <div class="menu">
-            <div [class]="isExpanded?'options active':'options'" style="--i:-1;">
+            <div (click)="onNextTable()" [class]="isExpanded?'options active':'options'" style="--i:-1;">
                 <h1>Table</h1>
             </div>
-            <div [class]="isExpanded?'options active':'options'" style="--i:1;">
+            <div (click)="onNextCombineTable()" [class]="isExpanded?'options active':'options'" style="--i:1;">
                 <h1>Combine Tables</h1>
             </div>    
         </div>
-        <div class="display" (click)="displayOption()">
+        <div  class="display" (click)="displayOption()">
             <h1>Display</h1>
         </div>
     </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-getstarted',
@@ -6,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './getstarted.component.css'
 })
 export class GetstartedComponent {
-
+  constructor(private router:Router) {}
+  onNext(){
+    this.router.navigate(['/app/table-selection']);
+  }
 }

@@ -1,5 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface slotist{
   logical: string | null,
@@ -51,6 +52,8 @@ export class HavingClauseScreenComponent {
     { value: '>=', viewValue: 'Greater than or equal to' },
     { value: '<=', viewValue: 'Less than or equal to' },
   ];
+
+  constructor(private router:Router){}
 
   reset() {
     this.slotList = [
@@ -108,6 +111,10 @@ export class HavingClauseScreenComponent {
 
   toggleOptionExpanded() {
     this.isOptionExpanded = !this.isOptionExpanded;
+  }
+
+  onNext(){
+    this.router.navigate(['/app/order-by'])
   }
 
 }

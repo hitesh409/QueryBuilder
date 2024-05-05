@@ -84,7 +84,7 @@
             <div class="next button" (click)="toggleOptionExpanded()">Next</div>
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
-                <div class="list">Order BY</div>
+                <div (click)="onNext()" class="list">Order BY</div>
             </div>
         </div>
 

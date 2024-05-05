@@ -6,7 +6,7 @@ export const loginGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const auth = inject(AuthService);
   if(auth.isAuthenticated()){
-    router.navigate(['/shared']);
+    router.navigate(['/app']);
     return false;
   }
 return true;

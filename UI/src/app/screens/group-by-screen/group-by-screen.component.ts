@@ -1,6 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, Input } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-group-by-screen',
@@ -29,6 +30,8 @@ export class GroupByScreenComponent {
   isEditable: boolean = true;
   isOptionExpanded: boolean = false;
 
+  constructor(private router:Router){}
+
   reset() {
     this.generatedQuery = '';
     this.selectedColumn = null;
@@ -47,6 +50,14 @@ export class GroupByScreenComponent {
 
   toggleOptionExpanded() {
     this.isOptionExpanded = !this.isOptionExpanded;
+  }
+
+  onNextHaving(){
+    this.router.navigate(['/app/having-clause'])
+  }
+
+  onNextOrderBy(){
+    this.router.navigate(['/app/order-by'])
   }
 
 }

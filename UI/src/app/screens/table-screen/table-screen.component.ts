@@ -7,6 +7,7 @@ import {
   transition,
   animate,
 } from '@angular/animations';
+import { Router } from '@angular/router';
 
 interface slotist {
   selectedAggregateFunction: string | null;
@@ -58,12 +59,14 @@ export class TableScreenComponent {
     { value: 'MAX', viewValue: 'Maximum' },
   ];
 
+  constructor(private router: Router) {}
+
   onTableSelected(table: TableModel) {
     this.tableArray.push(table);
     this.selectedTable.emit(this.tableArray);
   }
 
-  onAggragateSelected(){
+  onAggragateSelected() {
     this.AggregateList.emit(this.selectedAggr);
   }
 
@@ -127,8 +130,6 @@ export class TableScreenComponent {
       this.generatedQuery += columns;
     }
 
-    
-
     this.generatedQuery += ` from ${this.table?.tableName}`;
 
     this.isChecked = true;
@@ -140,4 +141,13 @@ export class TableScreenComponent {
   toggleOptionExpanded() {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
+
+  onNextCondition(){
+    this.router.navigate(['/app/condition-selection'])
+  }
+
+  onNextGroupBy(){
+    this.router.navigate(['/app/group-by'])
+  }
+
 }

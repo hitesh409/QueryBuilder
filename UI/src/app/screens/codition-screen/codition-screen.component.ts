@@ -7,6 +7,7 @@ import {
 } from '@angular/animations';
 import { Component, Input } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
+import { Router } from '@angular/router';
 
 interface slotist{
       logical: string | null,
@@ -69,6 +70,7 @@ export class CoditionScreenComponent {
     { value: 'NOT BETWEEN', viewValue: 'Not between' },
   ];
 
+   constructor(private router : Router) {}
 
   reset() {
     this.slotList = [
@@ -139,4 +141,13 @@ export class CoditionScreenComponent {
   toggleOptionExpanded() {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
+
+  onNextOrderBy(){
+    this.router.navigate(['order-by'])
+  }
+
+  onNextGroupBy(){
+    this.router.navigate(['/app/group-by'])
+  }
+
 }

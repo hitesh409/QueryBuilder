@@ -1,6 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
+import { Router } from '@angular/router';
 
 interface slotist {
   selectedAggregateFunction: string | null;
@@ -49,6 +50,8 @@ export class DisplayColumnsScreenComponent {
     { value: 'MIN', viewValue: 'Minimum' },
     { value: 'MAX', viewValue: 'Maximum' },
   ];
+
+  constructor(private router:Router){}
 
   onAggragateSelected(){
     this.AggregateList.emit(this.selectedAggr);
@@ -127,5 +130,12 @@ export class DisplayColumnsScreenComponent {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
 
+  onNextCondition(){
+    this.router.navigate(['/app/condition-selection'])
+  }
+
+  onNextGroupBy(){
+    this.router.navigate(['/app/group-by'])
+  }
 
 }

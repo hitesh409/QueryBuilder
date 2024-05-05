@@ -18,7 +18,7 @@ export class LoginComponent {
       (token: string) => {
         console.log('Login successful!', token);
         localStorage.setItem('token', token);
-        this.router.navigate(['/shared']); 
+        this.router.navigate(['/app']); 
       },
       (error) => {
         console.error('Login error:', error);

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { TableModel } from '../../models/dataset-model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MatSelect } from '@angular/material/select';
+import { Router } from '@angular/router';
 
 interface Slotist {
   joinType: string | null;
@@ -89,6 +90,8 @@ export class CombineTablesScreenComponent {
     { value: 'FULL JOIN', viewValue: 'rows from both tables' },
   ];
 
+  constructor(private router:Router) {}
+
   onTableSelected(table: TableModel) {
     const exists = this.tableArray.some(t => t.tableName === table.tableName);
     if (!exists) {
@@ -172,4 +175,9 @@ export class CombineTablesScreenComponent {
   toggleOptionExpanded() {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
+
+  onNext(){
+    this.router.navigate(['/app/display-columns'])
+  }
+
 }
