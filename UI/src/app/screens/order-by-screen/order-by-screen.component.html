@@ -13,7 +13,15 @@
                         }
                     </mat-select>
                 </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Select Order</mat-label>
+                    <mat-select [(value)]="selectedOrder">                   
+                        <mat-option value="ASC">Ascending</mat-option>
+                        <mat-option value="DESC">Descending</mat-option>  
+                    </mat-select>
+                </mat-form-field>
             </div>
+            
 
         </div>
         <div class="confirm-buttons">

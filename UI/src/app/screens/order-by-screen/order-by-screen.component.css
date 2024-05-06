@@ -71,9 +71,9 @@ h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
 
 .column-selection{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: 40%;
     height: 100%;
 }
 

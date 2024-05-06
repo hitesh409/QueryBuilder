@@ -34,6 +34,7 @@ export class OrderByScreenComponent implements OnInit {
   columns: string[] = [];
   generatedQuery: string = '';
   selectedColumn: string | null = null;
+  selectedOrder: string | null = null;
   isChecked: boolean = false;
   isEditable: boolean = true;
   isOptionExpanded: boolean = false;
@@ -79,11 +80,11 @@ export class OrderByScreenComponent implements OnInit {
   }
 
   getQuery() {
-    this.generatedQuery += `ORDER BY ${this.selectedColumn} `;
+    this.generatedQuery += `ORDER BY ${this.selectedColumn} ${this.selectedOrder} `;
 
     this.isChecked = true;
     this.isEditable = false;
-    this.service.generatedQuery+=this.generatedQuery;
+    this.service.generatedQuery += this.generatedQuery;
     this.service.console();
   }
 
