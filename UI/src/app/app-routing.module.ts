@@ -13,6 +13,7 @@ import { GroupByScreenComponent } from './screens/group-by-screen/group-by-scree
 import { HavingClauseScreenComponent } from './screens/having-clause-screen/having-clause-screen.component';
 import { CombineTablesScreenComponent } from './screens/combine-tables-screen/combine-tables-screen.component';
 import { DisplayColumnsScreenComponent } from './screens/display-columns-screen/display-columns-screen.component';
+import { appStartGuard } from './guard/app-start-guard/app-start.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -20,12 +21,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
   {
     path: 'app',
-
+    canActivate: [appStartGuard],
     children: [
       {
         path: '',
         component: SharedComponent,
-        canActivate:[authGuard],
+        canActivate: [authGuard],
         children: [
           { path: '', redirectTo: 'get-started', pathMatch: 'full' },
           { path: 'get-started', component: GetstartedComponent },
