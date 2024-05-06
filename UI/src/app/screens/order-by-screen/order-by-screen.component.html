@@ -1,9 +1,9 @@
-<div class="main-container">
+<div [@fadeInOut] class="main-container">
     <div class="header-content">
         <h1>Order By clause</h1>
     </div>
     <div class="main-content">
-        <div class="dynamic-content" [ngClass]="{'disabled': !isEditable}" > 
+        <div class="dynamic-content" [ngClass]="{'disabled': !isEditable}">
             <div class="column-selection option">
                 <mat-form-field>
                     <mat-label>Select Column for Order by</mat-label>
@@ -14,21 +14,22 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            
+
         </div>
         <div class="confirm-buttons">
             <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
-            matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
+                matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
                 <i class="material-icons">undo</i>
-            </button> 
+            </button>
             <button mat-icon-button class="check" [disabled]="!selectedColumn || isChecked " (click)="getQuery()">
                 <i class="material-icons">check</i>
             </button>
-              
+
         </div>
     </div>
 
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
+        <div class="back button">Back</div>
         <div class="runQuery button" (click)="preview()">Preview</div>
     </div>
 

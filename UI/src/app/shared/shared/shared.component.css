@@ -212,16 +212,12 @@ h1,h2,h3,h4{
     align-items: flex-end   ;
 }
 
-.displayNode{
-    height:20%;
-    background-color: black;
-}
 
  .dynamic-screen{
     /* background-color: #C2185B; */
     /* display: flex;
     justify-content: center;
     align-items: center; */
-    height: 70vh;
+    height: 90vh;
     overflow-y: scroll;
 } 

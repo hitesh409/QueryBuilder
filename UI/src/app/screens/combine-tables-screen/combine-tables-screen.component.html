@@ -1,8 +1,8 @@
-<div class="main-container">
+<div [@fadeInOut] class="main-container">
     <div class="header-content">
         <h1>Combine Tables</h1>
     </div>
-    <div class="main-content">
+    <div [@fadeInOut] class="main-content">
 
         <div class="dynamic-content" [ngClass]="{'disabled': !isEditable}">
 
@@ -95,6 +95,7 @@
     </div>
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
         <div class="next-options">
+            <div class="back button">Back</div>
             <div class="next button" (click)="toggleOptionExpanded()">Next</div>
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">

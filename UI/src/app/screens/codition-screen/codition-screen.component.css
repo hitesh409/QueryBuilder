@@ -1,5 +1,5 @@
 .main-container{
-    height: 65vh;
+    height: 85vh;
     width: 80vw;
     color: var(--font);
     font-family: "MyFont";
@@ -19,9 +19,8 @@ h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 1rem;
     margin: 0.7rem 0.7rem 0rem 0.7rem;
-    height: 44vh;
+    height: 64vh;
     width: 78.5vw;
     background-color: var(--card);
     border-radius: 1rem;
@@ -32,20 +31,21 @@ h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
     justify-content: center;
     align-items: center;
     width: 100%;
+    padding: 1rem;
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: 40vh;
+    height: 85%;
 }
 
 .dynamic-content .condition-selection{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-end;
     background-color: rgba(0, 0, 0, 0.15);
     border-radius: 1rem;
     overflow-y: scroll;
-    max-height: 32vh;
+    max-height: 30vh;
     padding: 1rem;
 }
 
@@ -64,6 +64,8 @@ h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    align-items: center;
+    height: 15%;
 }
 .confirm-buttons button{
     margin-right: 1rem;

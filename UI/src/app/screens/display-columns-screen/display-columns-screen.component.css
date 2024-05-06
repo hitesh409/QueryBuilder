@@ -1,5 +1,5 @@
 .main-container {
-    height: 65vh;
+    height: 85vh;
     width: 80vw;
     color: var(--font);
     font-family: "MyFont";
@@ -29,9 +29,8 @@ h4 {
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 1rem;
     margin: 0.7rem 0.7rem 0rem 0.7rem;
-    height: 44vh;
+    height: 64vh;
     width: 78.5vw;
     background-color: var(--card);
     border-radius: 1rem;
@@ -43,8 +42,10 @@ h4 {
     justify-content: center;
     align-items: flex-start;
     width: 100%;
-    overflow-y: scroll;
+    padding: 5rem;
+    overflow-y: hidden;
     overflow-x: scroll;
+    height: 85%;
 }
 
 .disabled {
@@ -57,6 +58,7 @@ h4 {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    height: 15%;
 }
 
 .confirm-buttons button {
@@ -94,7 +96,7 @@ mat-checkbox {
 }
 
 .checkbox-list {
-    height: 10rem;
+    height: 11rem;
     overflow-y: scroll;
 }
 
@@ -108,7 +110,7 @@ mat-checkbox {
     justify-content: flex-start;
     background-color: rgba(0, 0, 0, 0.15);
     border-radius: 1rem;
-    max-height: 14.5rem;
+    max-height: 15.5rem;
     min-width: fit-content;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -199,6 +201,6 @@ mat-checkbox {
 }
 
 .next-options .options .list:hover {
-    background-color: var(--hover);
+    background-color: var(--active);
     transition: 0.5s;
 }

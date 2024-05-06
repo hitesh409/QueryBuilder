@@ -1,5 +1,5 @@
 .main-container {
-    height: 65vh;
+    height: 85vh;
     width: 80vw;
     color: var(--font);
     font-family: "MyFont";
@@ -31,7 +31,7 @@ h4 {
     align-items: flex-start;
     padding: 1rem;
     margin: 0.7rem 0.7rem 0rem 0.7rem;
-    height: 44vh;
+    height: 64vh;
     width: 78.5vw;
     background-color: var(--card);
     border-radius: 1rem;
@@ -43,11 +43,13 @@ h4 {
     justify-content: center;
     align-items: center;
     width: 100%;
+    padding: 1rem;
     overflow-y: scroll;
     overflow-x: hidden;
+    height: 85%;
 }
 
-.join-selection{
+.join-selection {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -62,7 +64,7 @@ h4 {
 }
 
 
-.join-selection .slot{
+.join-selection .slot {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -81,7 +83,8 @@ h4 {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: flex-end;    
+    height: 15%;
 }
 
 .confirm-buttons button {
@@ -148,7 +151,7 @@ mat-checkbox {
 .add-remove-slot {
     display: flex;
     flex-direction: row;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     position: relative;
     width: 100%;

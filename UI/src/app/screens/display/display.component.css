@@ -1,11 +1,14 @@
 .display-container{
-    height: 70vh;
-    width: 80vw;
+    height: 85vh;
+    width: 78vw;
     display: flex;
     justify-content:center;
     align-items: flex-start;
     flex-direction: column;
     font-family: "MyFont";
+    background-color: var(--card);
+    margin: 1rem;
+    border-radius: 1rem;
 }
 h1,h2,h3,h4{padding: 0;margin: 0;}
 .content{
@@ -13,7 +16,7 @@ h1,h2,h3,h4{padding: 0;margin: 0;}
 }
 .options{
     position: absolute;
-    background-color: var(--card);
+    background-color: var(--hover);
     color: var(--font);
     padding: 2rem;
     border-radius: 4rem;
@@ -26,7 +29,7 @@ h1,h2,h3,h4{padding: 0;margin: 0;}
 }
 
 .options:hover{
-    background-color: var(--hover);
+    background-color: var(--active);
     box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.15);
 }
 

@@ -1,4 +1,4 @@
-<div class="main-container">
+<div [@fadeInOut] class="main-container">
     <div class="header-content">
         <h1>Condition selection</h1>
     </div>
@@ -6,7 +6,7 @@
 
         <div class="dynamic-content"[ngClass]="{'disabled': !isEditable}">
 
-            <div class="condition-selection">
+            <div [@fadeInOut] class="condition-selection">
                 <ng-container *ngFor="let slot of slotList;let i = index">
                     <div class="slot">
 
@@ -113,6 +113,7 @@
     </div>
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
         <div class="next-options">
+            <div class="back button">Back</div>
             <div class="next button" (click)="toggleOptionExpanded()">Next</div>
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
@@ -121,6 +122,7 @@
             </div>
         </div>
 
+        
         <div class="runQuery button">Preview</div>
     </div>
 </div>
