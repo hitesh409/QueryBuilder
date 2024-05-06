@@ -117,7 +117,7 @@
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
                 <div (click)="onNextOrderBy()" class="list">Order BY</div>
-                <div (click)="onNextGroupBy()" class="list">Group BY</div>
+                <div *ngIf="isAggregateFunction" (click)="onNextGroupBy()" class="list">Group BY</div>
             </div>
         </div>
 

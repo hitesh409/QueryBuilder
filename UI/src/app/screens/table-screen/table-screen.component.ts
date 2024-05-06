@@ -8,6 +8,7 @@ import {
   animate,
 } from '@angular/animations';
 import { Router } from '@angular/router';
+import { StateManagementService } from '../../services/state-management-service/state-management.service';
 
 interface slotist {
   selectedAggregateFunction: string | null;
@@ -31,13 +32,7 @@ interface slotist {
   ],
 })
 export class TableScreenComponent {
-  @Input() tables: TableModel[] = [];
-  @Output() selectedTable: EventEmitter<TableModel[]> = new EventEmitter<
-    TableModel[]
-  >();
-  @Output() AggregateList: EventEmitter<string[]> = new EventEmitter<
-    string[]
-  >();
+  tables: TableModel[] = this.service.tables;
 
   generatedQuery: string = '';
   slotList: slotist[] = [
@@ -59,16 +54,13 @@ export class TableScreenComponent {
     { value: 'MAX', viewValue: 'Maximum' },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private service : StateManagementService) {}
 
   onTableSelected(table: TableModel) {
-    this.tableArray.push(table);
-    this.selectedTable.emit(this.tableArray);
+    this.service.tableArray.push(table);
   }
 
-  onAggragateSelected() {
-    this.AggregateList.emit(this.selectedAggr);
-  }
+  
 
   toggleCheckBox(column: string, event: any) {
     if (event.checked) {
@@ -115,11 +107,15 @@ export class TableScreenComponent {
         );
       }
     }
+    
+    if(this.selectedAggr.length!=0)
+      {
+        this.service.aggregateFunctions = this.selectedAggr;
+      }
 
-    if (this.selectedAggr.length != 0) {
+    if (this.service.aggregateFunctions.length != 0) {
       const aggString = this.selectedAggr.join(', ');
       this.generatedQuery += aggString;
-      this.onAggragateSelected();
     }
 
     if (this.selectedColumns.length != 0) {
@@ -130,12 +126,14 @@ export class TableScreenComponent {
       this.generatedQuery += columns;
     }
 
-    this.generatedQuery += ` from ${this.table?.tableName}`;
+    this.generatedQuery += ` from ${this.table?.tableName} `;
 
     this.isChecked = true;
     this.isEditable = false;
 
+    this.service.generatedQuery+=this.generatedQuery;
     console.log('Query: ', this.generatedQuery);
+    this.service.console();
   }
 
   toggleOptionExpanded() {

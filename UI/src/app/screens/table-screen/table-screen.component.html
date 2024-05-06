@@ -72,8 +72,8 @@
             <div class="next button" (click)="toggleOptionExpanded()">Next</div>
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
-                <div class="list">Condition</div>
-                <div class="list">Group By</div>
+                <div (click)="onNextCondition()" class="list">Condition</div>
+                <div *ngIf="this.selectedAggr.length>0" (click)="onNextGroupBy()"  class="list">Group By</div>
             </div>
         </div>
         

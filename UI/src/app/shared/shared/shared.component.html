@@ -31,7 +31,7 @@
 
                         <div *ngIf="chosenDatasetIndex===index "  class="tables">
                             <ul class="list-group " [@tableOpenClose]="chosenDatasetIndex === index ? 'open' : 'closed'">
-                                <li *ngFor="let table of tables" class="list-group-item">
+                                <li *ngFor="let table of this.tables" class="list-group-item">
                                     <div class="table-list">
                                         <div class="table-front">
                                             <i class="material-icons table_chart">table_chart</i>

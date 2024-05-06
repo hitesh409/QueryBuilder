@@ -1,7 +1,14 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { Router } from '@angular/router';
+import { StateManagementService } from '../../services/state-management-service/state-management.service';
 
 interface slotist {
   selectedAggregateFunction: string | null;
@@ -24,14 +31,11 @@ interface slotist {
     ]),
   ],
 })
-export class DisplayColumnsScreenComponent {
-  @Input() tableArray : TableModel[] = [];
-  @Input() subQuery : string = "subQuery";
-  @Output() AggregateList: EventEmitter<string[]> = new EventEmitter<
-  string[]
->();
+export class DisplayColumnsScreenComponent implements OnInit {
+  tableArray: TableModel[] = this.service.tableArray;
+  subQuery: string | null = this.service.subQuery;
 
-  columns: string[] = ['column1', 'column2', 'column3', 'column4']; //to be replace with tableArray
+  columns: string[] = []; //to be replace with tableArray
   generatedQuery: string = '';
   slotList: slotist[] = [
     { selectedAggregateFunction: null, selectedColumn: null },
@@ -51,10 +55,20 @@ export class DisplayColumnsScreenComponent {
     { value: 'MAX', viewValue: 'Maximum' },
   ];
 
-  constructor(private router:Router){}
+  constructor(
+    private router: Router,
+    private service: StateManagementService
+  ) {}
 
-  onAggragateSelected(){
-    this.AggregateList.emit(this.selectedAggr);
+  ngOnInit():void{
+    for(let table of this.tableArray){
+      for(let column of table.columnNames)
+      this.columns.push(table.tableName+"."+column)
+    }
+  }
+
+  onAggragateSelected() {
+    this.service.aggregateFunctions=this.selectedAggr;
   }
 
   toggleCheckBox(column: string, event: any) {
@@ -92,7 +106,6 @@ export class DisplayColumnsScreenComponent {
     this.slotList.splice(index, 1);
   }
 
-
   getQuery() {
     for (let agg of this.slotList) {
       if (agg.selectedAggregateFunction && agg.selectedColumn) {
@@ -116,26 +129,24 @@ export class DisplayColumnsScreenComponent {
       this.generatedQuery += columns;
     }
 
-    
-
-    this.generatedQuery += ` FROM ${this.subQuery}`;
+    this.generatedQuery += ` FROM ${this.subQuery} `;
 
     this.isChecked = true;
     this.isEditable = false;
 
-    console.log('Query: ', this.generatedQuery);
+    this.service.generatedQuery+=this.generatedQuery;
+    this.service.console();
   }
 
   toggleOptionExpanded() {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
 
-  onNextCondition(){
-    this.router.navigate(['/app/condition-selection'])
+  onNextCondition() {
+    this.router.navigate(['/app/condition-selection']);
   }
 
-  onNextGroupBy(){
-    this.router.navigate(['/app/group-by'])
+  onNextGroupBy() {
+    this.router.navigate(['/app/group-by']);
   }
-
 }

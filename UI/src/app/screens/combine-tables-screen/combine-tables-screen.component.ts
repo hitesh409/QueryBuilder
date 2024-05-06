@@ -1,8 +1,21 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { StateManagementService } from '../../services/state-management-service/state-management.service';
 
 interface Slotist {
   joinType: string | null;
@@ -29,29 +42,27 @@ interface Slotist {
   ],
 })
 export class CombineTablesScreenComponent {
-  @Input() tables: TableModel[] = [];
-  @Output() selectedTable: EventEmitter<TableModel[]> = new EventEmitter<TableModel[]>();
-  @Output() generatedSubQuery: EventEmitter<string> = new EventEmitter<string>();
-  tooltipText1: string = "Select Matching Column from left Table";
-  tooltipText2: string = "Select Matching Column from right Table";
+  tables: TableModel[] = this.service.tables;
+  tooltipText1: string = 'Select Matching Column from left Table';
+  tooltipText2: string = 'Select Matching Column from right Table';
   valueSelected1: boolean = false;
   valueSelected2: boolean = false;
-  
+
   @ViewChild('selectBox1') selectBox1!: MatSelect;
   @ViewChild('selectBox2') selectBox2!: MatSelect;
-  
+
   ngAfterViewInit() {
     if (this.selectBox1) {
       this.selectBox1.selectionChange.subscribe(() => {
         this.valueSelected1 = true;
-        this.tooltipText1 = "";
+        this.tooltipText1 = '';
       });
     }
 
     if (this.selectBox2) {
       this.selectBox2.selectionChange.subscribe(() => {
         this.valueSelected2 = true;
-        this.tooltipText2 = "";
+        this.tooltipText2 = '';
       });
     }
   }
@@ -73,7 +84,7 @@ export class CombineTablesScreenComponent {
   isEditable: boolean = true;
   isOptionExpanded: boolean = false;
   tableArray: TableModel[] = [];
-  leftMostTable : TableModel | null = null;
+  leftMostTable: TableModel | null = null;
 
   aggregateFunctions = [
     { value: 'SUM', viewValue: 'Sum' },
@@ -90,18 +101,21 @@ export class CombineTablesScreenComponent {
     { value: 'FULL JOIN', viewValue: 'rows from both tables' },
   ];
 
-  constructor(private router:Router) {}
+  constructor(
+    private router: Router,
+    private service: StateManagementService
+  ) {}
 
   onTableSelected(table: TableModel) {
-    const exists = this.tableArray.some(t => t.tableName === table.tableName);
+    const exists = this.tableArray.some((t) => t.tableName === table.tableName);
     if (!exists) {
       this.tableArray.push(table);
       console.log(this.tableArray);
     }
   }
 
-  onEmitTable(){
-    this.selectedTable.emit(this.tableArray);
+  onEmitTable() {
+    this.service.tableArray = this.tableArray;
   }
 
   reset() {
@@ -143,7 +157,7 @@ export class CombineTablesScreenComponent {
         !slot.rightTable ||
         !slot.joinType ||
         !slot.basedOnCondition1 ||
-        !slot.basedOncondition2 
+        !slot.basedOncondition2
       ) {
         return false;
       }
@@ -152,32 +166,30 @@ export class CombineTablesScreenComponent {
   }
 
   getQuery() {
-    
-    this.generatedQuery += this.leftMostTable?.tableName+" ";
+    this.generatedQuery += this.leftMostTable?.tableName + ' ';
 
-    for(let slot of this.slotList)
-      {
-        this.generatedQuery += slot.joinType+" ";
-        this.generatedQuery += slot.rightTable?.tableName+" ";
-        this.generatedQuery += "ON ";
-        this.generatedQuery += slot.basedOnCondition1+" ";
-        this.generatedQuery += "= ";
-        this.generatedQuery += slot.basedOncondition2+" ";
-      }
+    for (let slot of this.slotList) {
+      this.generatedQuery += slot.joinType + ' ';
+      this.generatedQuery += slot.rightTable?.tableName + ' ';
+      this.generatedQuery += 'ON ';
+      this.generatedQuery += slot.basedOnCondition1 + ' ';
+      this.generatedQuery += '= ';
+      this.generatedQuery += slot.basedOncondition2 + ' ';
+    }
 
     this.isChecked = true;
     this.isEditable = false;
     this.onEmitTable();
-    this.generatedSubQuery.emit(this.generatedQuery);
+    this.service.subQuery = this.generatedQuery;
     console.log('Query: ', this.generatedQuery);
+    this.service.console()
   }
 
   toggleOptionExpanded() {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
 
-  onNext(){
-    this.router.navigate(['/app/display-columns'])
+  onNext() {
+    this.router.navigate(['/app/display-columns']);
   }
-
 }

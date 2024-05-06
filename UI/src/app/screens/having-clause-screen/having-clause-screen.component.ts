@@ -1,6 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { StateManagementService } from '../../services/state-management-service/state-management.service';
 
 interface slotist{
   logical: string | null,
@@ -25,10 +26,8 @@ interface slotist{
     ]),
   ],
 })
-export class HavingClauseScreenComponent {
-  @Input() aggregateFunctions : string[] = [];
-
-  aggFuns: string[] = ['COUNT(id)','SUM(salary)','AVG(salary)','MAX(age)'] //to be replaced with aggregateFunctions
+export class HavingClauseScreenComponent implements OnInit {
+  aggregateFunctions : string[] = this.service.aggregateFunctions;
   generatedQuery : string = '';
 
   slotList: slotist[] = [
@@ -53,7 +52,13 @@ export class HavingClauseScreenComponent {
     { value: '<=', viewValue: 'Less than or equal to' },
   ];
 
-  constructor(private router:Router){}
+  ngOnInit():void{
+    for(let column of this.aggregateFunctions){
+      this.aggregateFunctions.push(column);
+    }
+  }
+
+  constructor(private router:Router,private service:StateManagementService){}
 
   reset() {
     this.slotList = [
@@ -106,7 +111,8 @@ export class HavingClauseScreenComponent {
     }
     this.isChecked = true;
     this.isEditable = false;
-    console.log('Query: ', this.generatedQuery);
+    this.service.generatedQuery+=this.generatedQuery;
+    this.service.console();
   }
 
   toggleOptionExpanded() {

@@ -3,6 +3,7 @@ import { DatasetService } from '../../services/dataset-service/dataset.service';
 import { DatasetModel, TableModel } from '../../models/dataset-model';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { StateManagementService } from '../../services/state-management-service/state-management.service';
 
 @Component({
   selector: 'app-shared',
@@ -27,16 +28,12 @@ export class SharedComponent implements OnInit {
   showUploadOverlay = false;
   showTables: boolean = false;
   chosenDatasetIndex: number = -1;
-  chosenDataset: DatasetModel | null = null;
   datasets: DatasetModel[] = [];
-  tables: TableModel[] = [];
   overlayRef: OverlayRef | null = null;
   errorMessage: string | null = null;
-  tableArray: TableModel[] = [];
-  subQuery: string | null = null;
-  aggregateFunctions : string[] = [];
+  tables:TableModel[]=[];
 
-  constructor(private datasetService: DatasetService,private overlay : Overlay) {}
+  constructor(private datasetService: DatasetService,private overlay : Overlay,private service : StateManagementService) {}
   ngOnInit(): void {
     this.fetchDatasets();
   }
@@ -63,43 +60,44 @@ export class SharedComponent implements OnInit {
     );
   }
 
-  onTableSelected(table:TableModel[]){
-    if(table){
-      this.tableArray = table;
-    }
-  }
+  // onTableSelected(table:TableModel[]){
+  //   if(table){
+  //     this.tableArray = table;
+  //   }
+  // }
 
-  onSubQueryGenerated(subQuery:string){
-    if(subQuery){
-      this.subQuery = subQuery;
-    }
-  }
+  // onSubQueryGenerated(subQuery:string){
+  //   if(subQuery){
+  //     this.subQuery = subQuery;
+  //   }
+  // }
 
-  onAggragateSelected(agg:string[]){
-    if(agg)
-      this.aggregateFunctions = agg;
-  }
+  // onAggragateSelected(agg:string[]){
+  //   if(agg)
+  //     this.aggregateFunctions = agg;
+  // }
 
   getTables(datasetId: string) {
     this.datasetService.getTables(datasetId).subscribe(
       (tables) => {
-        this.tables = tables;
-        console.log('Tables: ', this.tables[0]);
+        this.service.tables = tables;
+        this.tables = this.service.tables;
+        console.log('Tables: ', this.service.tables[0]);
       },
       (error) => {
         this.errorMessage = error.message;
       }
     );
-    console.log("TableArray: ",this.tableArray);
-    console.log("AggregateFunction: ",this.aggregateFunctions)
-    console.log("subQuery: ",this.subQuery);
+    console.log("TableArray: ",this.service.tableArray);
+    console.log("AggregateFunction: ",this.service.aggregateFunctions)
+    console.log("subQuery: ",this.service.subQuery);
   }
 
   toggleDatasetSelection(index: number) {
     if (this.chosenDatasetIndex !== index) {
       this.chosenDatasetIndex = index;
-      this.chosenDataset = this.datasets[index];
-      this.getTables(this.chosenDataset.id);
+      this.service.chosenDataset = this.datasets[index];
+      this.getTables(this.service.chosenDataset.id);
     }
   }
 

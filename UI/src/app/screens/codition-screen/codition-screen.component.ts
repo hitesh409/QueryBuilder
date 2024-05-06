@@ -5,9 +5,10 @@ import {
   transition,
   animate,
 } from '@angular/animations';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { Router } from '@angular/router';
+import { StateManagementService } from '../../services/state-management-service/state-management.service';
 
 interface slotist{
       logical: string | null,
@@ -37,11 +38,20 @@ interface slotist{
 
 
 
-export class CoditionScreenComponent {
-  @Input() tableArray: TableModel[] = [];
+export class CoditionScreenComponent implements OnInit {
+  tableArray: TableModel[] = this.service.tableArray;
 
-  columns: string[] = ['column1', 'column2', 'column3', 'column4']; //to be replace with tableArray
+  columns: string[] = [];
   generatedQuery: string = '';
+  isAggregateFunction:boolean=(this.service.aggregateFunctions.length>0);
+
+  ngOnInit():void{
+    for(let table of this.tableArray){
+      for(let column of table.columnNames){
+        this.columns.push(table.tableName+"."+column);
+      }
+    }
+  }
 
   slotList: slotist[] = [
     {
@@ -70,7 +80,7 @@ export class CoditionScreenComponent {
     { value: 'NOT BETWEEN', viewValue: 'Not between' },
   ];
 
-   constructor(private router : Router) {}
+   constructor(private router : Router,private service:StateManagementService) {}
 
   reset() {
     this.slotList = [
@@ -136,6 +146,8 @@ export class CoditionScreenComponent {
     this.isChecked = true;
     this.isEditable = false;
     console.log('Query: ', this.generatedQuery);
+    this.service.generatedQuery+=this.generatedQuery;
+    this.service.console();
   }
 
   toggleOptionExpanded() {
@@ -143,7 +155,7 @@ export class CoditionScreenComponent {
   }
 
   onNextOrderBy(){
-    this.router.navigate(['order-by'])
+    this.router.navigate(['/app/order-by'])
   }
 
   onNextGroupBy(){

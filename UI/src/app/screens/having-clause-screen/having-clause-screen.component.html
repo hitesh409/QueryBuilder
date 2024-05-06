@@ -28,7 +28,7 @@
 
                                 <mat-label>Select Aggregate column</mat-label>
                                 <mat-select [(value)]="slot.column">
-                                    @for (column of aggFuns; track column) {
+                                    @for (column of aggregateFunctions; track column) {
                                     <mat-option [value]="column">{{column}}</mat-option>
                                     }
                                 </mat-select>
