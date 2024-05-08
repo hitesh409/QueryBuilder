@@ -9,6 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
+import { Location } from '@angular/common';
 
 interface slotist{
       logical: string | null,
@@ -80,7 +81,7 @@ export class CoditionScreenComponent implements OnInit {
     { value: 'NOT BETWEEN', viewValue: 'Not between' },
   ];
 
-   constructor(private router : Router,private service:StateManagementService) {}
+   constructor(private router : Router,private service:StateManagementService,private location:Location) {}
 
   reset() {
     this.slotList = [
@@ -148,6 +149,10 @@ export class CoditionScreenComponent implements OnInit {
     console.log('Query: ', this.generatedQuery);
     this.service.generatedQuery+=this.generatedQuery;
     this.service.console();
+  }
+
+  onBack(){
+    this.location.back();
   }
 
   toggleOptionExpanded() {

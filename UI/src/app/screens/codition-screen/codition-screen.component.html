@@ -113,7 +113,7 @@
     </div>
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
         <div class="next-options">
-            <div class="back button">Back</div>
+            <div (click)="onBack()" class="back button">Back</div>
             <div class="next button" (click)="toggleOptionExpanded()">Next</div>
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">

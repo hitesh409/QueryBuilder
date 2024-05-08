@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualBasic;
 using OfficeOpenXml;
+using System.Data;
 namespace BackendAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -125,156 +126,187 @@ namespace BackendAPI.Controllers
             }
 
 
-            try
-            {
+
+            //try
+            //{
                 using (var file = System.IO.File.OpenRead(location))
                 {
                     using (var package = new ExcelPackage(file))
                     {
                         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                         var connection = await _databaseConnection.OpenConnectionAsync();
-                        await CreateTemporaryTableFromData(connection, package);
+                    foreach (var worksheet in package.Workbook.Worksheets)
+                    {
+                        var tableName = worksheet.Name;
+                        var data = await ReadAndParseExcelData(worksheet);
 
-                        var results = await ExecuteQueryAsync(previewQuery.QueryText, datasetId);
+                        // Create temporary table based on Excel data
+                        await CreateTemporaryTable(connection, tableName, data);
+
+                        // Insert data into the temporary table
+                        await InsertDataIntoTable(connection, tableName, data);
+                    }
+                    //await CreateTemporaryTableFromData(connection, package);
+
+                        var results = await ExecuteQueryAsync(previewQuery.QueryText, datasetId,connection);
                         _memoryCache.Set(cacheKey, results, new MemoryCacheEntryOptions
                         {
                             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                         });
                         return Ok(results);
+                        //return Ok();
                     }
                 }
-            }
+            //}
 
-            catch (Exception ex)
-            {
-                return BadRequest($"Error parsing Excel data: {ex.Message}");
-            }
+            //catch (Exception ex)
+            //{
+            //    return BadRequest($"Error parsing Excel data: {ex.Message}");
+            //}
+
+
+
 
 
         }
-
-        private async Task<List<object>> ExecuteQueryAsync(string queryText, Guid datasetId)
+        private async Task CreateTemporaryTable(SqliteConnection connection, string tableName, Dictionary<string, List<object>> data)
         {
-            if (!await ValidateQuerySyntaxAsync(queryText))
-            {
-                return new List<object>() { new { message = "Invalid column names used in the query" } };
-            }
+            // Create temporary table based on Excel data
+            await connection.OpenAsync();
+            var createStatement = $"CREATE TABLE IF NOT EXISTS {tableName} (";
+            createStatement += string.Join(",", data.Keys.Select(x => $"{x} TEXT"));
+            createStatement += ")";
+            System.Diagnostics.Debug.WriteLine(createStatement);
+            await ExecuteNonQueryAsync(connection, createStatement);
+        }
 
-            using (var connection = await _databaseConnection.OpenConnectionAsync())
-            {
+        private async Task<List<object>> ExecuteQueryAsync(string queryText, Guid datasetId,SqliteConnection connection)
+        {
+            System.Diagnostics.Debug.WriteLine("ExecuteQueryAsync");
 
-                var temporaryTableNames = await GetTemporaryTableNamesAsync(connection);
-                var modifiedQuery = queryText;
-                foreach (var worksheet in temporaryTableNames.Keys)
+                System.Diagnostics.Debug.WriteLine("chech1");
+                var command = new SqliteCommand(queryText, connection);
+                System.Diagnostics.Debug.WriteLine("chech2");
+                var results = new List<object>();
+                System.Diagnostics.Debug.WriteLine("chech3");
+                try
                 {
-                    modifiedQuery = modifiedQuery.Replace($"[{worksheet}]", worksheet); // Replace table names
-                    var columnReplacements = temporaryTableNames[worksheet]; // Get column name replacements for this worksheet
-                    
-
-                    for (int i = 0; i < columnReplacements.Count; i++)
+                    using (var reader = await command.ExecuteReaderAsync())
                     {
-                        var originalName = temporaryTableNames[worksheet][i]; // Assuming original names are stored in the temporary table names dictionary
-                        var replacementName = columnReplacements[i];
-                        modifiedQuery = modifiedQuery.Replace(originalName, replacementName); // Replace column names
+                        System.Diagnostics.Debug.WriteLine($"check4 {reader.HasRows}");
+                        while (reader.Read())
+                        {
+                            System.Diagnostics.Debug.WriteLine("check5");
+                            var row = new List<object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                row.Add(reader.GetValue(i));
+                            }
+                            results.Add(row);
+                        }
                     }
                 }
-
-                var command = new SqliteCommand(modifiedQuery, connection);
-
-                var results = new List<object>();
-                using (var reader = await command.ExecuteReaderAsync())
+                catch (Exception ex)
                 {
-                    while (reader.Read())
-                    {
-                        var row = new List<object>();
-                        for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            row.Add(reader.GetValue(i));
-                        }
-                        results.Add(row);
-                    }
+                    // Log the exception
+                    System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
+                    throw; // Rethrow the exception
                 }
 
                 return results;
-            }
+            
         }
 
-        private async Task<Dictionary<string, List<string>>> GetTemporaryTableNamesAsync(SqliteConnection connection)
-        {
-            var tableNames = new Dictionary<string, List<string>>();
-            var sql = "SELECT name, sql FROM sqlite_master WHERE type='table'"; // Assuming temporary tables are stored as 'table' type
 
-            using (var command = new SqliteCommand(sql, connection))
-            {
-                var reader = await command.ExecuteReaderAsync();
-                while (reader.Read())
-                {
-                    var tableName = reader.GetString(0); // Assuming first column holds table name
-                    var createStatement = reader.GetString(1); // Assuming second column holds CREATE TABLE statement
+        //private async Task<Dictionary<string, List<string>>> GetTemporaryTableNamesAsync(SqliteConnection connection)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("GetTemporaryTableNamesAsync");
+        //    var tableNames = new Dictionary<string, List<string>>();
+        //    var sql = "SELECT name, sql FROM sqlite_master "; // Assuming temporary tables are stored as 'table' type
+            
+        //    await connection.OpenAsync();
+        //    System.Diagnostics.Debug.WriteLine("check1");
+        //    using (var command = new SqliteCommand(sql, connection))
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("check2");
+        //        var reader = await command.ExecuteReaderAsync();
+        //        while (reader.Read())
+        //        {
+        //            System.Diagnostics.Debug.WriteLine("check4");
+        //            var tableName = reader.GetString(0); // Assuming first column holds table name
+        //            System.Diagnostics.Debug.WriteLine($"{tableName}");
+        //            var createStatement = reader.GetString(1); // Assuming second column holds CREATE TABLE statement
+        //            System.Diagnostics.Debug.WriteLine($"{createStatement}");
 
-                    // Extract column names from CREATE TABLE statement
-                    var columnNames = ExtractColumnNamesFromStatement(createStatement);
-                    tableNames.Add(tableName, columnNames);
-                }
-            }
+        //            // Extract column names from CREATE TABLE statement
+        //            var columnNames = ExtractColumnNamesFromStatement(createStatement);
+        //            tableNames.Add(tableName, columnNames);
+        //        }
+        //    }
 
-            return tableNames;
-        }
+        //    return tableNames;
+        //}
 
-        private List<string> ExtractColumnNamesFromStatement(string createStatement)
-        {
-            var startIndex = createStatement.IndexOf('(') + 1;
-            var endIndex = createStatement.LastIndexOf(')');
-            var columnList = createStatement.Substring(startIndex, endIndex - startIndex).Trim();
-            return columnList.Split(',').Select(x => x.Trim()).ToList();
-        }
-        private async Task CreateTemporaryTableFromData(SqliteConnection connection, ExcelPackage package)
-        {
-            await connection.OpenAsync();
-            foreach (var worksheet in package.Workbook.Worksheets)
-            {
-                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                var tableName = worksheet.Name;
-                var data = await ReadAndParseExcelData(worksheet);
-                var createStatement = $"CREATE TABLE IF NOT EXISTS {tableName} (";
-                createStatement += string.Join(",", data.Keys.Select(x => $"{x} TEXT"));
-                createStatement += ")";
-                await ExecuteNonQueryAsync(connection, createStatement);
+        //private List<string> ExtractColumnNamesFromStatement(string createStatement)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("ExtractColumnNamesFromStatement");
+        //    var startIndex = createStatement.IndexOf('(') + 1;
+        //    var endIndex = createStatement.LastIndexOf(')');
+        //    var columnList = createStatement.Substring(startIndex, endIndex - startIndex).Trim();
+        //    return columnList.Split(',').Select(x => x.Trim()).ToList();
+        //}
 
-                await InsertDataIntoTable(connection, tableName, data);
-            }
-        }
+
+        //private async Task CreateTemporaryTableFromData(SqliteConnection connection, ExcelPackage package)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("CreateTemporaryTableFromData");
+        //    await connection.OpenAsync();
+        //    foreach (var worksheet in package.Workbook.Worksheets)
+        //    {
+        //        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        //        var tableName = worksheet.Name;
+        //        var data = await ReadAndParseExcelData(worksheet);
+        //        //foreach (var kvp in data)
+        //        //{
+        //        //    System.Diagnostics.Debug.WriteLine($"Column: {kvp.Key}");
+
+        //        //    foreach (var value in kvp.Value)
+        //        //    {
+        //        //        System.Diagnostics.Debug.WriteLine($"  Value: {value}");
+        //        //    }
+        //        //}
+
+        //        var createStatement = $"CREATE TABLE IF NOT EXISTS {tableName} (";
+        //        createStatement += string.Join(",", data.Keys.Select(x => $"{x} TEXT"));
+        //        createStatement += ")";
+        //        System.Diagnostics.Debug.WriteLine(createStatement);
+        //        await ExecuteNonQueryAsync(connection, createStatement);
+                
+        //        await InsertDataIntoTable(connection, tableName, data);
+        //    }
+            
+        //}
 
         private async Task InsertDataIntoTable(SqliteConnection connection, string tableName, Dictionary<string, List<object>> data)
         {
+            System.Diagnostics.Debug.WriteLine("InsertDataIntoTable");
             foreach (var keyValuePair in data)
             {
                 var columnNames = string.Join(",", keyValuePair.Key);
-                var parameterNames = string.Join(",", keyValuePair.Key.Select(x => "@" + x));
+                System.Diagnostics.Debug.WriteLine($"table names {tableName}");
 
-                var insertStatement = $"INSERT INTO {tableName} ({columnNames}) VALUES ({parameterNames})";
-
-                using (var command = new SqliteCommand(insertStatement, connection))
+                foreach (var value in keyValuePair.Value) // Loop through each value in the current column
                 {
-                    foreach (var columnName in keyValuePair.Key)
-                    {
-                        command.Parameters.AddWithValue("@" + columnName, ""); // Placeholder value, will be replaced later
-                    }
+                    var parameterName = "@" + keyValuePair.Key; // Parameter name for the current column
+                    var insertStatement = $"INSERT INTO {tableName} ({keyValuePair.Key}) VALUES ({parameterName})";
+                    System.Diagnostics.Debug.WriteLine($"Insert Statement: {insertStatement}");
 
-                    for (int i = 0; i < keyValuePair.Value.Count; i++)
+                    using (var command = new SqliteCommand(insertStatement, connection))
                     {
-                        if (keyValuePair.Value.Count == keyValuePair.Key.Count()) // Ensure the number of values matches the number of columns
-                        {
-                            foreach (var columnName in keyValuePair.Key)
-                            {
-                                command.Parameters["@" + columnName].Value = keyValuePair.Value[i];
-                            }
-                            await command.ExecuteNonQueryAsync();
-                        }
-                        else
-                        {
-                            throw new Exception("Mismatch between the number of columns and values.");
-                        }
+                        command.Parameters.AddWithValue(parameterName, value); // Add parameter for the current value
+                        System.Diagnostics.Debug.WriteLine($"Parameter Name: {parameterName}, Value: {value}");
+
+                        await command.ExecuteNonQueryAsync();
                     }
                 }
             }
@@ -282,75 +314,18 @@ namespace BackendAPI.Controllers
 
         private async Task ExecuteNonQueryAsync(SqliteConnection connection, string sql)
         {
+            System.Diagnostics.Debug.WriteLine("ExecuteNonQueryAsync");
             using (var command = new SqliteCommand(sql, connection))
             {
                 await command.ExecuteNonQueryAsync();
             }
         }
 
-        private async Task<bool> ValidateQuerySyntaxAsync(string queryText)
+        private Task<Dictionary<string, List<object>>> ReadAndParseExcelData(ExcelWorksheet worksheet)
         {
-            if (string.IsNullOrEmpty(queryText))
-            {
-                return false; 
-            }
+            System.Diagnostics.Debug.WriteLine("ReadAndParseExcelData");
 
-            var unsupportedKeywords = new string[] { "UPDATE", "DELETE", "INSERT", "CREATE", "DROP" };
-            if (unsupportedKeywords.Any(keyword => queryText.ToUpper().Contains(keyword)))
-            {
-                return false; 
-            }
-
-            if (!queryText.Contains("JOIN") && !queryText.Contains("WHERE"))
-            {
-                return true;
-            }
-            var tableNames = queryText.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Where(x => x.StartsWith("[") && x.EndsWith("]"))
-                .Select(x => x.TrimStart('[').TrimEnd(']'))
-                .ToList();
-            var connection = await _databaseConnection.OpenConnectionAsync();
-            var temporaryTableNames = await GetTemporaryTableNamesAsync(connection); // Replace _connection with your connection object
-
-            var replacedQuery = queryText;
-            foreach (var table in temporaryTableNames.Keys)
-            {
-                replacedQuery = replacedQuery.Replace($"[{table}]", table); // Assuming table names are replaced with actual names
-            }
-
-            var referencedColumns = replacedQuery.Split(new[] { ' ', ',', '.' }, StringSplitOptions.RemoveEmptyEntries)
-                .Where(x => !x.StartsWith("'") && !x.EndsWith("'")) // Exclude strings and operators
-                .Select(x => x.Trim())
-                .ToList();
-
-            return !referencedColumns.Except(temporaryTableNames.SelectMany(x => x.Value)).Any();
-
-            // Check if all referenced table names exist (assuming they haven't been replaced yet)
-            //if (!tableNames.All(name => _temporaryTableNames.Contains(name))) // Replace _temporaryTableNames with your mechanism to store created table names
-            //{
-            //    return false;
-            //}
-
-            //if (queryText.Contains("WHERE"))
-            //{
-            //    var whereClause = queryText.Split(new[] { "WHERE" }, StringSplitOptions.RemoveEmptyEntries).Last().Trim();
-            //    // Implement logic to check for valid comparisons (e.g., column names, comparison operators like =, >, <, etc.)
-            //    // You can use regular expressions or a parser library for more advanced validation.
-            //}
-
-            //if (queryText.Contains("JOIN"))
-            //{
-            //    // Implement logic to check for valid JOIN types (INNER, LEFT, RIGHT, etc.) and JOIN conditions between tables.
-            //}
-
-            //return true;
-        }
-
-        private async Task<Dictionary<string, List<object>>> ReadAndParseExcelData(ExcelWorksheet worksheet)
-        {
-            
-
-                if (worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column].All(cell => cell.Value == null))
+            if (worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column].All(cell => cell.Value == null))
                 {
                     throw new Exception("Excel file missing header row");
                 }
@@ -381,7 +356,7 @@ namespace BackendAPI.Controllers
                     }
                 }
 
-                return data;
+                return Task.FromResult(data);
             
         }
     }
