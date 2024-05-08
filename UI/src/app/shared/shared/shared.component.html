@@ -24,9 +24,9 @@
                         (click)="toggleDatasetSelection(index)">
                         <div [ngClass]="{'selected':chosenDatasetIndex==index}" class="front" 
                             matTooltip="Connect to database" matTooltipPosition="right"
-                            matTooltipClass="custom-tooltip">
-                            <i class="material-icons storage">storage</i>
-                            <span class="dbname">{{dataset.name}}</span>
+                            matTooltipClass="custom-tooltip" >
+                                <i class="material-icons storage">storage</i>
+                                <span class="dbname">{{dataset.name}}</span>
                         </div>
 
                         <div *ngIf="chosenDatasetIndex===index "  class="tables">

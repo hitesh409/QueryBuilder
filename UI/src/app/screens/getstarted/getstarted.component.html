@@ -3,8 +3,12 @@
         <div class="first-text">Hello, Test1</div>
         <div class="second-text">Welcome to QueryBuilder</div>
     </div>
-    <div (click)="onNext()" class="button">
+    
+    <div  (click)="onNext()" class="button">
         Get Started
+    </div>
+    <div *ngIf="!isallowed && isDisplay" class="text">
+        select the database to get started!!
     </div>
 </div>
 

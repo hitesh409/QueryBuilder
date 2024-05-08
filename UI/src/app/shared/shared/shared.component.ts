@@ -32,6 +32,8 @@ export class SharedComponent implements OnInit {
   overlayRef: OverlayRef | null = null;
   errorMessage: string | null = null;
   tables:TableModel[]=[];
+  
+  
 
   constructor(private datasetService: DatasetService,private overlay : Overlay,private service : StateManagementService) {}
   ngOnInit(): void {

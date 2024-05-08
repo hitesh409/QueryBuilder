@@ -1,5 +1,5 @@
 .main-container{
-    height: 100vh;
+    height: 90vh;
     width: 80vw;
     display: flex;
     justify-content: center;
@@ -8,6 +8,12 @@
     font-family: "MyFont";
 }
 
+.main-container .text{
+    color: var(--font);
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    font-weight: 300;
+}
 
 .content .first-text{
     background: linear-gradient(
