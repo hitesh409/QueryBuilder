@@ -16,6 +16,7 @@ import {
 import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
+import { Location } from '@angular/common';
 
 interface Slotist {
   joinType: string | null;
@@ -103,7 +104,8 @@ export class CombineTablesScreenComponent {
 
   constructor(
     private router: Router,
-    private service: StateManagementService
+    private service: StateManagementService,
+    private location:Location,
   ) {}
 
   onTableSelected(table: TableModel) {
@@ -191,5 +193,9 @@ export class CombineTablesScreenComponent {
 
   onNext() {
     this.router.navigate(['/app/display-columns']);
+  }
+
+  onBack(){
+    this.location.back();
   }
 }

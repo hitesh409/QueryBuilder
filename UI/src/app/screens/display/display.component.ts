@@ -34,4 +34,6 @@ export class DisplayComponent {
   onNextCombineTable() {
     this.router.navigate(['/app/combine-tables']);
   }
+
+  
 }

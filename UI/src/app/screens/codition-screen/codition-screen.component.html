@@ -4,7 +4,7 @@
     </div>
     <div class="main-content">
 
-        <div class="dynamic-content"[ngClass]="{'disabled': !isEditable}">
+        <div class="dynamic-content" [ngClass]="{'disabled': !isEditable}">
 
             <div [@fadeInOut] class="condition-selection">
                 <ng-container *ngFor="let slot of slotList;let i = index">
@@ -49,11 +49,11 @@
                             <mat-form-field>
                                 <mat-label>Select pattern</mat-label>
                                 <mat-select [(value)]="slot.patternType">
-                                    
+
                                     <mat-option value="0">Starts with...</mat-option>
                                     <mat-option value="1">Ends with...</mat-option>
                                     <mat-option value="2">Contains...</mat-option>
-                
+
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -86,34 +86,34 @@
                         </ng-template>
                     </div>
                     <div class="add-remove-slot">
-                        <mat-icon *ngIf="i!=0" matTooltip="Remove condition" matTooltipPosition="left" (click)="removeSlot(i)"
-                            style="cursor: pointer;border-radius: 50%;">remove</mat-icon>
+                        <mat-icon *ngIf="i!=0" matTooltip="Remove condition" matTooltipPosition="left"
+                            (click)="removeSlot(i)" style="cursor: pointer;border-radius: 50%;">remove</mat-icon>
                         <hr style="width: 90%;height: 2px;background-color: black;">
-                        <mat-icon matTooltip="Add more condition" matTooltipPosition="right" (click)="addSlot()" style="cursor: pointer;border-radius: 50%;">add</mat-icon>
+                        <mat-icon matTooltip="Add more condition" matTooltipPosition="right" (click)="addSlot()"
+                            style="cursor: pointer;border-radius: 50%;">add</mat-icon>
                     </div>
                 </ng-container>
 
             </div>
-
-
-
-
         </div>
 
         <div class="confirm-buttons">
-            <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
-                matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
-                <i class="material-icons">undo</i>
-            </button>
-            <button mat-icon-button class="check" [disabled]="!allFieldsFilled() || isChecked" (click)="getQuery()">
-                <i class="material-icons">check</i>
-            </button>
-
+            <div (click)="onBack()" class="back button">Back</div>
+            <div class="div">
+                <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
+                    matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
+                    <i class="material-icons">undo</i>
+                </button>
+                <button mat-icon-button class="check" [disabled]="!allFieldsFilled() || isChecked" (click)="getQuery()">
+                    <i class="material-icons">check</i>
+                </button>
+            </div>
         </div>
+
+
     </div>
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
         <div class="next-options">
-            <div (click)="onBack()" class="back button">Back</div>
             <div class="next button" (click)="toggleOptionExpanded()">Next</div>
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
@@ -122,7 +122,7 @@
             </div>
         </div>
 
-        
-        <div class="runQuery button">Preview</div>
+
+        <div (click)="preview()" class="runQuery button">Preview</div>
     </div>
 </div>

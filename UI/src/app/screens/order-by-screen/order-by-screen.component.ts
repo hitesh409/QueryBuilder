@@ -11,6 +11,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-order-by-screen',
@@ -49,7 +50,8 @@ export class OrderByScreenComponent implements OnInit {
 
   constructor(
     private overlay: Overlay,
-    private service: StateManagementService
+    private service: StateManagementService,
+    private location:Location
   ) {}
 
   preview() {
@@ -70,6 +72,8 @@ export class OrderByScreenComponent implements OnInit {
     });
     const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
     overlayRef.attach(queryOverlayRef);
+    
+
   }
 
   reset() {
@@ -90,5 +94,9 @@ export class OrderByScreenComponent implements OnInit {
 
   toggleOptionExpanded() {
     this.isOptionExpanded = !this.isOptionExpanded;
+  }
+
+  onBack(){
+    this.location.back();
   }
 }

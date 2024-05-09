@@ -3,6 +3,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-group-by-screen',
@@ -39,13 +43,33 @@ export class GroupByScreenComponent implements OnInit {
     }
   }
 
-  constructor(private router:Router,private service:StateManagementService){}
+  constructor(private router:Router,private service:StateManagementService,private overlay:Overlay,private location:Location){}
 
   reset() {
     this.generatedQuery = '';
     this.selectedColumn = null;
     this.isChecked = false;
     this.isEditable = true;
+  }
+
+  preview() {
+    const overlayRef = this.overlay.create({
+      // height:"90vh",
+      // width:"90vw",
+      positionStrategy: this.overlay
+        .position()
+        .global()
+        .centerHorizontally() // Center horizontally
+        .centerVertically(),
+      hasBackdrop: true,
+      backdropClass: 'dark-backdrop',
+      panelClass: 'overlay-panel',
+    });
+    overlayRef.backdropClick().subscribe(() => {
+      overlayRef.dispose();
+    });
+    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
+    overlayRef.attach(queryOverlayRef);
   }
 
   getQuery(){
@@ -68,6 +92,10 @@ export class GroupByScreenComponent implements OnInit {
 
   onNextOrderBy(){
     this.router.navigate(['/app/order-by'])
+  }
+
+  onBack(){
+    this.location.back();
   }
 
 }

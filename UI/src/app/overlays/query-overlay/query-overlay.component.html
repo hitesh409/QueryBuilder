@@ -2,12 +2,13 @@
     <div class="close">
         <h3>Preview Query</h3>
         <button mat-icon-button>
-            <i class="material-icons" style="color: white;">close</i>
+            <i (click)="onClose()" class="material-icons" style="color: white;">close</i>
         </button>
     </div>
     <div class="query-div">
         <div class="query">
-            <code>SELECT <span class="text"> Id, Name, Weight, Symbol</span> FROM <span class="text">Periodic</span>  WHERE <span class="text">Id</span> < <span class="text">17</span></code>
+          <code>{{queryText}}</code>
+          
         </div>
         <div class="run">
             RUN
@@ -15,7 +16,7 @@
 
     </div>
     <div class="table">
-        <table>
+        <!-- <table>
           <thead>
             <tr>
               <th>Id</th>
@@ -32,6 +33,6 @@
               <td>{{ element.symbol }}</td>
             </tr>
           </tbody>
-        </table>
+        </table> -->
       </div>
 </div>

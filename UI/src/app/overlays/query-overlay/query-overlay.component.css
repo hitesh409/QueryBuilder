@@ -49,6 +49,10 @@ h3{
     font-size: 1.2rem;
     overflow-x: scroll;
 }
+.query-div .query code{
+  width: 100%;
+  overflow-x: scroll;
+}
 
 .query-div .query .text{
     color: var(--font);
@@ -60,6 +64,7 @@ h3{
     color: var(--font);
     border-radius: 2rem;
     font-size: 1rem;
+    cursor: pointer;
 }
 
 .table {

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output, output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  output,
+} from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import {
   trigger,
@@ -9,6 +17,10 @@ import {
 } from '@angular/animations';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
+import { Location } from '@angular/common';
 
 interface slotist {
   selectedAggregateFunction: string | null;
@@ -31,7 +43,7 @@ interface slotist {
     ]),
   ],
 })
-export class TableScreenComponent {
+export class TableScreenComponent implements OnInit {
   tables: TableModel[] = this.service.tables;
 
   generatedQuery: string = '';
@@ -54,13 +66,30 @@ export class TableScreenComponent {
     { value: 'MAX', viewValue: 'Maximum' },
   ];
 
-  constructor(private router: Router,private service : StateManagementService) {}
+  constructor(
+    private router: Router,
+    private service: StateManagementService,
+    private overlay: Overlay,
+    private location: Location
+  ) {}
+
+  ngOnInit() {
+    if (this.generatedQuery != null) {
+      const indexToRemove = this.service.generatedQuery.indexOf(
+        this.generatedQuery
+      );
+      if (indexToRemove !== -1) {
+        const lengthToRemove = this.generatedQuery.length;
+        this.service.generatedQuery =
+          this.service.generatedQuery.slice(0, indexToRemove) +
+          this.service.generatedQuery.slice(indexToRemove + lengthToRemove);
+      }
+    }
+  }
 
   onTableSelected(table: TableModel) {
     this.service.tableArray.push(table);
   }
-
-  
 
   toggleCheckBox(column: string, event: any) {
     if (event.checked) {
@@ -78,6 +107,16 @@ export class TableScreenComponent {
   }
 
   reset() {
+    const indexToRemove = this.service.generatedQuery.indexOf(
+      this.generatedQuery
+    );
+    if (indexToRemove !== -1) {
+      const lengthToRemove = this.generatedQuery.length;
+      this.service.generatedQuery =
+        this.service.generatedQuery.slice(0, indexToRemove) +
+        this.service.generatedQuery.slice(indexToRemove + lengthToRemove);
+    }
+    this.service.aggregateFunctions = [];
     this.generatedQuery = '';
     this.slotList = [{ selectedAggregateFunction: null, selectedColumn: null }];
     this.table = null;
@@ -86,6 +125,28 @@ export class TableScreenComponent {
     this.isChecked = false;
     this.isEditable = true;
     this.tableArray = [];
+    this.service.tableArray.pop();
+  }
+
+  preview() {
+    const overlayRef = this.overlay.create({
+      // height:"90vh",
+      // width:"90vw",
+      positionStrategy: this.overlay
+        .position()
+        .global()
+        .centerHorizontally() // Center horizontally
+        .centerVertically(),
+      hasBackdrop: true,
+      backdropClass: 'dark-backdrop',
+      panelClass: 'overlay-panel',
+    });
+    overlayRef.backdropClick().subscribe(() => {
+      overlayRef.dispose();
+    });
+
+    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
+    overlayRef.attach(queryOverlayRef);
   }
 
   addSlot() {
@@ -107,11 +168,10 @@ export class TableScreenComponent {
         );
       }
     }
-    
-    if(this.selectedAggr.length!=0)
-      {
-        this.service.aggregateFunctions = this.selectedAggr;
-      }
+
+    if (this.selectedAggr.length != 0) {
+      this.service.aggregateFunctions = this.selectedAggr;
+    }
 
     if (this.service.aggregateFunctions.length != 0) {
       const aggString = this.selectedAggr.join(', ');
@@ -131,7 +191,7 @@ export class TableScreenComponent {
     this.isChecked = true;
     this.isEditable = false;
 
-    this.service.generatedQuery+=this.generatedQuery;
+    this.service.generatedQuery += this.generatedQuery;
     console.log('Query: ', this.generatedQuery);
     this.service.console();
   }
@@ -140,12 +200,26 @@ export class TableScreenComponent {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
 
-  onNextCondition(){
-    this.router.navigate(['/app/condition-selection'])
+  onNextCondition() {
+    this.router.navigate(['/app/condition-selection']);
   }
 
-  onNextGroupBy(){
-    this.router.navigate(['/app/group-by'])
+  onNextGroupBy() {
+    this.router.navigate(['/app/group-by']);
   }
 
+  onBack() {
+    const indexToRemove = this.service.generatedQuery.indexOf(
+      this.generatedQuery
+    );
+    if (indexToRemove !== -1) {
+      const lengthToRemove = this.generatedQuery.length;
+      this.service.generatedQuery =
+        this.service.generatedQuery.slice(0, indexToRemove) +
+        this.service.generatedQuery.slice(indexToRemove + lengthToRemove);
+    }
+    this.service.aggregateFunctions = [];
+    this.service.tableArray.pop();
+    this.location.back();
+  }
 }

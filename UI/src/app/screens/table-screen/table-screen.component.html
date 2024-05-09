@@ -4,31 +4,31 @@
     </div>
     <div class="main-content">
 
-        <div class="dynamic-content" [ngClass]="{'disabled': !isEditable}" > 
+        <div class="dynamic-content" [ngClass]="{'disabled': !isEditable}">
             <div class="table-selection option">
                 <mat-form-field>
                     <mat-label>Select Table</mat-label>
-                    <mat-select [(value)]="table"  (selectionChange)="onTableSelected($event.value)">
+                    <mat-select [(value)]="table" (selectionChange)="onTableSelected($event.value)">
                         @for (table of tables; track table) {
                         <mat-option [value]="table">{{table.tableName}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
             </div>
-            
+
             <div [@fadeInOut] class="column-selection option" *ngIf="table!=null">
                 <h3>Select Columns:</h3>
-                    <div class="checkbox-list">
-                        <mat-checkbox *ngFor="let column of table.columnNames" [checked]="selectedColumns.includes(column)"
-                            (change)="toggleCheckBox(column,$event)" color="accent">
-                            {{column}}
-                        </mat-checkbox>
-                    </div>
+                <div class="checkbox-list">
+                    <mat-checkbox *ngFor="let column of table.columnNames" [checked]="selectedColumns.includes(column)"
+                        (change)="toggleCheckBox(column,$event)" color="accent">
+                        {{column}}
+                    </mat-checkbox>
+                </div>
             </div>
-    
-            <div [@fadeInOut] class="agg-selection option" >
+
+            <div [@fadeInOut] class="agg-selection option">
                 <ng-container *ngFor="let slot of slotList; let i = index">
-                    <div [@fadeInOut]  class="slot">
+                    <div [@fadeInOut] class="slot">
                         <mat-form-field class="agg-function div">
                             <mat-label>Select aggregate functions:</mat-label>
                             <mat-select [(value)]="slot.selectedAggregateFunction">
@@ -47,37 +47,42 @@
                         </mat-form-field>
                     </div>
                     <div class="add-remove-slot">
-                        <mat-icon *ngIf="i!=0" (click)="removeSlot(i)" style="cursor: pointer;border-radius: 50%;">remove</mat-icon>
+                        <mat-icon *ngIf="i!=0" (click)="removeSlot(i)"
+                            style="cursor: pointer;border-radius: 50%;">remove</mat-icon>
                         <hr style="width: 90%;height: 2px;background-color: black;">
                         <mat-icon (click)="addSlot()" style="cursor: pointer;border-radius: 50%;">add</mat-icon>
-                    </div>  
+                    </div>
                 </ng-container>
-            </div> 
+            </div>
         </div>
 
         <div class="confirm-buttons">
-            <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
-            matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
-                <i class="material-icons">undo</i>
-            </button> 
-            <button mat-icon-button class="check" [disabled]="!(table && (selectedColumns.length!=0 || hasSelectedAggrAndColumns())) || isChecked" (click)="getQuery()">
-                <i class="material-icons">check</i>
-            </button>
-              
+            <div (click)="onBack()" class="back button">Back</div>
+            <div class="div">
+                <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
+                    matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
+                    <i class="material-icons">undo</i>
+                </button>
+                <button mat-icon-button class="check"
+                    [disabled]="!(table && (selectedColumns.length!=0 || hasSelectedAggrAndColumns())) || isChecked"
+                    (click)="getQuery()">
+                    <i class="material-icons">check</i>
+                </button>
+            </div>
         </div>
-            
+
     </div>
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
         <div class="next-options">
-            <div class="back button">Back</div>
+
             <div class="next button" (click)="toggleOptionExpanded()">Next</div>
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
                 <div (click)="onNextCondition()" class="list">Condition</div>
-                <div *ngIf="this.selectedAggr.length>0" (click)="onNextGroupBy()"  class="list">Group By</div>
+                <div *ngIf="this.selectedAggr.length>0" (click)="onNextGroupBy()" class="list">Group By</div>
             </div>
         </div>
-        
-        <div class="runQuery button">Preview</div>
+
+        <div (click)="preview()" class="runQuery button">Preview</div>
     </div>
 </div>

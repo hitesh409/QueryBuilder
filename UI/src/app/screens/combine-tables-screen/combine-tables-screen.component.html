@@ -81,21 +81,27 @@
 
         </div>
 
+        
         <div class="confirm-buttons">
-            <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
+            <div (click)="onBack()" class="back button">Back</div>
+            <div class="div">
+                <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
                 matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
-                <i class="material-icons">undo</i>
-            </button>
-            <button mat-icon-button class="check" [disabled]="!allFieldsFilled() || isChecked" (click)="getQuery()">
-                <i class="material-icons">check</i>
-            </button>
-
+                    <i class="material-icons">undo</i>
+                </button> 
+                <button mat-icon-button class="check" [disabled]="!allFieldsFilled() || isChecked" (click)="getQuery()">
+                    <i class="material-icons">check</i>
+                </button>
+            </div>
+            
+              
         </div>
+        
 
     </div>
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
         <div class="next-options">
-            <div class="back button">Back</div>
+           
             <div class="next button" (click)="toggleOptionExpanded()">Next</div>
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">

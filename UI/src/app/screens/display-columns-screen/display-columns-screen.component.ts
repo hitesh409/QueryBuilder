@@ -9,6 +9,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
+import { Location } from '@angular/common';
 
 interface slotist {
   selectedAggregateFunction: string | null;
@@ -57,7 +61,9 @@ export class DisplayColumnsScreenComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private service: StateManagementService
+    private service: StateManagementService,
+    private overlay:Overlay,
+    private location:Location
   ) {}
 
   ngOnInit():void{
@@ -84,6 +90,26 @@ export class DisplayColumnsScreenComponent implements OnInit {
     return this.slotList.some(
       (slot) => slot.selectedAggregateFunction && slot.selectedColumn
     );
+  }
+
+  preview() {
+    const overlayRef = this.overlay.create({
+      // height:"90vh",
+      // width:"90vw",
+      positionStrategy: this.overlay
+        .position()
+        .global()
+        .centerHorizontally() // Center horizontally
+        .centerVertically(),
+      hasBackdrop: true,
+      backdropClass: 'dark-backdrop',
+      panelClass: 'overlay-panel',
+    });
+    overlayRef.backdropClick().subscribe(() => {
+      overlayRef.dispose();
+    });
+    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
+    overlayRef.attach(queryOverlayRef);
   }
 
   reset() {
@@ -148,5 +174,8 @@ export class DisplayColumnsScreenComponent implements OnInit {
 
   onNextGroupBy() {
     this.router.navigate(['/app/group-by']);
+  }
+  onBack(){
+    this.location.back();
   }
 }

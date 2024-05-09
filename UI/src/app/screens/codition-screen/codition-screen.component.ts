@@ -8,8 +8,11 @@ import {
 import { Component, Input, OnInit } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { Router } from '@angular/router';
+import { Overlay } from '@angular/cdk/overlay';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
 import { Location } from '@angular/common';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
 
 interface slotist{
       logical: string | null,
@@ -54,6 +57,8 @@ export class CoditionScreenComponent implements OnInit {
     }
   }
 
+
+
   slotList: slotist[] = [
     {
       logical: null,
@@ -81,9 +86,18 @@ export class CoditionScreenComponent implements OnInit {
     { value: 'NOT BETWEEN', viewValue: 'Not between' },
   ];
 
-   constructor(private router : Router,private service:StateManagementService,private location:Location) {}
+   constructor(private router : Router,private service:StateManagementService,private location:Location,private overlay:Overlay) {}
 
   reset() {
+    const indexToRemove = this.service.generatedQuery.indexOf(
+      this.generatedQuery
+    );
+    if (indexToRemove !== -1) {
+      const lengthToRemove = this.generatedQuery.length;
+      this.service.generatedQuery =
+        this.service.generatedQuery.slice(0, indexToRemove) +
+        this.service.generatedQuery.slice(indexToRemove + lengthToRemove);
+    }
     this.slotList = [
       {
         logical: null,
@@ -152,6 +166,15 @@ export class CoditionScreenComponent implements OnInit {
   }
 
   onBack(){
+    const indexToRemove = this.service.generatedQuery.indexOf(
+      this.generatedQuery
+    );
+    if (indexToRemove !== -1) {
+      const lengthToRemove = this.generatedQuery.length;
+      this.service.generatedQuery =
+        this.service.generatedQuery.slice(0, indexToRemove) +
+        this.service.generatedQuery.slice(indexToRemove + lengthToRemove);
+    }
     this.location.back();
   }
 
@@ -165,6 +188,26 @@ export class CoditionScreenComponent implements OnInit {
 
   onNextGroupBy(){
     this.router.navigate(['/app/group-by'])
+  }
+
+  preview(){
+    const overlayRef = this.overlay.create({
+      // height:"90vh",
+      // width:"90vw",
+      positionStrategy: this.overlay
+        .position()
+        .global()
+        .centerHorizontally() // Center horizontally
+        .centerVertically(),
+      hasBackdrop: true,
+      backdropClass: 'dark-backdrop',
+      panelClass: 'overlay-panel',
+    });
+    overlayRef.backdropClick().subscribe(() => {
+      overlayRef.dispose();
+    });
+    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
+    overlayRef.attach(queryOverlayRef);
   }
 
 }

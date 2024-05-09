@@ -15,29 +15,32 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Select Order</mat-label>
-                    <mat-select [(value)]="selectedOrder">                   
+                    <mat-select [(value)]="selectedOrder">
                         <mat-option value="ASC">Ascending</mat-option>
-                        <mat-option value="DESC">Descending</mat-option>  
+                        <mat-option value="DESC">Descending</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-            
+
 
         </div>
         <div class="confirm-buttons">
-            <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
-                matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
-                <i class="material-icons">undo</i>
-            </button>
-            <button mat-icon-button class="check" [disabled]="!selectedColumn || isChecked " (click)="getQuery()">
-                <i class="material-icons">check</i>
-            </button>
-
+            <div (click)="onBack()" class="back button">Back</div>
+            <div class="div">
+                <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
+                    matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
+                    <i class="material-icons">undo</i>
+                </button>
+                <button mat-icon-button class="check" [disabled]="!selectedColumn || isChecked " (click)="getQuery()">
+                    <i class="material-icons">check</i>
+                </button>
+            </div>
         </div>
+
+
     </div>
 
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
-        <div class="back button">Back</div>
         <div class="runQuery button" (click)="preview()">Preview</div>
     </div>
 

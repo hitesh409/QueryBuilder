@@ -17,19 +17,23 @@
             
         </div>
         <div class="confirm-buttons">
-            <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
-            matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
-                <i class="material-icons">undo</i>
-            </button> 
-            <button mat-icon-button class="check" [disabled]="!selectedColumn" (click)="getQuery()">
-                <i class="material-icons">check</i>
-            </button>
-              
+            <div (click)="onBack()" class="back button">Back</div>
+            <div class="div">
+                <button mat-icon-button class="undo" matTooltip="Revert changes" matTooltipPosition="left"
+                    matTooltipClass="custom-tooltip" [disabled]="!isChecked" (click)="reset()">
+                    <i class="material-icons">undo</i>
+                </button>
+                <button mat-icon-button class="check"
+                [disabled]="!selectedColumn"
+                    (click)="getQuery()">
+                    <i class="material-icons">check</i>
+                </button>
+            </div>
         </div>
+        
     </div> 
     <div class="navigate-buttons" [ngClass]="{'disabled':!isChecked}">
         <div class="next-options">
-            <div class="back button">Back</div>
             <div class="next button" (click)="toggleOptionExpanded()">Next</div>
             <div class="divider"></div>
             <div [@fadeInOut] class="options" *ngIf="isOptionExpanded">
@@ -38,6 +42,6 @@
             </div>
         </div>
         
-        <div class="runQuery button">Preview</div>
+        <div (click)="preview()" class="runQuery button">Preview</div>
     </div>
 </div>

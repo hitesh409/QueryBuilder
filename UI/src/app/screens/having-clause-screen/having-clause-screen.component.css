@@ -59,17 +59,42 @@ h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
     pointer-events: none;
     opacity: 0.5;
 }
-.confirm-buttons{
+.confirm-buttons {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     height: 15%;
 }
-.confirm-buttons button{
+
+.confirm-buttons .div{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.confirm-buttons .button{
+    font-family: "MyFont";
+    padding: 1rem;
+    margin: 1rem;
+    background-color: var(--active);
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 2rem;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.confirm-buttons .div button {
     margin-right: 1rem;
     padding: 0.5rem;
     font-size: 2rem;
+}
+
+.confirm-buttons .button:hover{
+    opacity: 1;
+    transition: 0.5s;
+    color: white;
 }
 .confirm-buttons .check{
     background-color: green;

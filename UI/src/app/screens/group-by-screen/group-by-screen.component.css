@@ -1,20 +1,30 @@
-.main-container{
+.main-container {
     height: 85vh;
     width: 80vw;
     color: var(--font);
     font-family: "MyFont";
 }
-h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
-.header-content{
+
+h1,
+h2,
+h3,
+h4 {
+    padding: 0;
+    margin: 0;
+    font-family: "MyFont";
+}
+
+.header-content {
     height: 8vh;
-    background-color: var(--card);  
+    background-color: var(--card);
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0.7rem 0.7rem 0rem 0.7rem;
     border-radius: 1rem;
 }
-.main-content{
+
+.main-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -25,7 +35,8 @@ h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
     background-color: var(--card);
     border-radius: 1rem;
 }
-.main-content .dynamic-content{
+
+.main-content .dynamic-content {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -36,48 +47,27 @@ h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
     overflow-x: scroll;
     height: 85%;
 }
+
 .disabled {
     pointer-events: none;
     opacity: 0.5;
 }
-.confirm-buttons{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    height: 15%;
-}
-.confirm-buttons button{
-    margin-right: 1rem;
-    padding: 0.5rem;
-    font-size: 2rem;
-}
-.confirm-buttons .check{
-    background-color: green;
-}
-.confirm-buttons .undo{
-    background-color: rgba(0, 0, 0, 0.15);
-}
 
-.navigate-buttons{
-    height: 12vh;
-    background-color: var(--card);
-    margin: 0.7rem 0.7rem 0rem 0.7rem;
-    border-radius: 1rem;
+.confirm-buttons {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    height: 15%;
 }
 
-.column-selection{
+.confirm-buttons .div{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+    justify-content: flex-end;
 }
-.navigate-buttons .button{
+
+.confirm-buttons .button{
     font-family: "MyFont";
     padding: 1rem;
     margin: 1rem;
@@ -89,32 +79,82 @@ h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
     opacity: 0.9;
 }
 
-.navigate-buttons .button:hover{
+.confirm-buttons .div button {
+    margin-right: 1rem;
+    padding: 0.5rem;
+    font-size: 2rem;
+}
+
+.confirm-buttons .button:hover{
     opacity: 1;
     transition: 0.5s;
     color: white;
 }
 
-.next-options{
+.confirm-buttons .check {
+    background-color: green;
+}
+
+.confirm-buttons .undo {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.navigate-buttons {
+    height: 12vh;
+    background-color: var(--card);
+    margin: 0.7rem 0.7rem 0rem 0.7rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.column-selection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.navigate-buttons .button {
+    font-family: "MyFont";
+    padding: 1rem;
+    margin: 1rem;
+    background-color: var(--active);
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 2rem;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.navigate-buttons .button:hover {
+    opacity: 1;
+    transition: 0.5s;
+    color: white;
+}
+
+.next-options {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.next-options .divider{
+.next-options .divider {
     background-color: var(--hover);
     height: 3rem;
     width: 0.1rem;
 }
 
-.next-options .options{
+.next-options .options {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 }
 
-.next-options .options .list
-{
+.next-options .options .list {
     background-color: rgba(0, 0, 0, 0.15);
     font-family: "MyFont";
     padding: 1rem;
@@ -125,7 +165,7 @@ h1,h2,h3,h4{padding: 0;margin: 0;font-family: "MyFont";}
     cursor: pointer;
 }
 
-.next-options .options .list:hover{
+.next-options .options .list:hover {
     background-color: var(--active);
     transition: 0.5s;
 }

@@ -1,14 +1,24 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
+import { Location } from '@angular/common';
 
-interface slotist{
-  logical: string | null,
-  column: string | null,
-  operator: string | null
-  value: string | number | null,
-};
+interface slotist {
+  logical: string | null;
+  column: string | null;
+  operator: string | null;
+  value: string | number | null;
+}
 
 @Component({
   selector: 'app-having-clause-screen',
@@ -27,8 +37,8 @@ interface slotist{
   ],
 })
 export class HavingClauseScreenComponent implements OnInit {
-  aggregateFunctions : string[] = this.service.aggregateFunctions;
-  generatedQuery : string = '';
+  aggregateFunctions: string[] = this.service.aggregateFunctions;
+  generatedQuery: string = '';
 
   slotList: slotist[] = [
     {
@@ -52,13 +62,18 @@ export class HavingClauseScreenComponent implements OnInit {
     { value: '<=', viewValue: 'Less than or equal to' },
   ];
 
-  ngOnInit():void{
-    for(let column of this.aggregateFunctions){
+  ngOnInit(): void {
+    for (let column of this.aggregateFunctions) {
       this.aggregateFunctions.push(column);
     }
   }
 
-  constructor(private router:Router,private service:StateManagementService){}
+  constructor(
+    private router: Router,
+    private service: StateManagementService,
+    private overlay: Overlay,
+    private location:Location
+  ) {}
 
   reset() {
     this.slotList = [
@@ -73,6 +88,26 @@ export class HavingClauseScreenComponent implements OnInit {
     this.isChecked = false;
     this.isEditable = true;
     this.isOptionExpanded = false;
+  }
+
+  preview() {
+    const overlayRef = this.overlay.create({
+      // height:"90vh",
+      // width:"90vw",
+      positionStrategy: this.overlay
+        .position()
+        .global()
+        .centerHorizontally() // Center horizontally
+        .centerVertically(),
+      hasBackdrop: true,
+      backdropClass: 'dark-backdrop',
+      panelClass: 'overlay-panel',
+    });
+    overlayRef.backdropClick().subscribe(() => {
+      overlayRef.dispose();
+    });
+    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
+    overlayRef.attach(queryOverlayRef);
   }
 
   addSlot() {
@@ -90,11 +125,7 @@ export class HavingClauseScreenComponent implements OnInit {
 
   allFieldsFilled(): boolean {
     for (const slot of this.slotList) {
-      if (
-        !slot.column ||
-        !slot.operator ||
-        !slot.value
-      ) {
+      if (!slot.column || !slot.operator || !slot.value) {
         return false;
       }
     }
@@ -104,14 +135,14 @@ export class HavingClauseScreenComponent implements OnInit {
   getQuery() {
     this.generatedQuery += 'HAVING ';
     for (let slot of this.slotList) {
-      if (slot.logical != null) this.generatedQuery += slot.logical+" ";
-      this.generatedQuery += slot.column+" ";
-      this.generatedQuery += slot.operator+" ";
-      this.generatedQuery += slot.value+" ";
+      if (slot.logical != null) this.generatedQuery += slot.logical + ' ';
+      this.generatedQuery += slot.column + ' ';
+      this.generatedQuery += slot.operator + ' ';
+      this.generatedQuery += slot.value + ' ';
     }
     this.isChecked = true;
     this.isEditable = false;
-    this.service.generatedQuery+=this.generatedQuery;
+    this.service.generatedQuery += this.generatedQuery;
     this.service.console();
   }
 
@@ -119,8 +150,11 @@ export class HavingClauseScreenComponent implements OnInit {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
 
-  onNext(){
-    this.router.navigate(['/app/order-by'])
+  onNext() {
+    this.router.navigate(['/app/order-by']);
   }
 
+  onBack(){
+    this.location.back();
+  }
 }
