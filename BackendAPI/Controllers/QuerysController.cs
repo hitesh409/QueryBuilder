@@ -111,13 +111,13 @@ namespace BackendAPI.Controllers
             }
 
             // caching
-            string cacheKey = $"query_{previewQuery.QueryText}_{datasetId}";
-            var cache = _memoryCache.Get<List<object>>(cacheKey);
+            //string cacheKey = $"query_{previewQuery.QueryText}_{datasetId}";
+            //var cache = _memoryCache.Get<List<object>>(cacheKey);
 
-            if (cache != null)
-            {
-                return Ok(cache);
-            }
+            //if (cache != null)
+            //{
+            //    return Ok(cache);
+            //}
 
             var location = _context.Datasets.Where(d => d.Id == datasetId).Select(d => d.Location).FirstOrDefault();
             if (location == null)
@@ -149,10 +149,10 @@ namespace BackendAPI.Controllers
                     //await CreateTemporaryTableFromData(connection, package);
 
                         var results = await ExecuteQueryAsync(previewQuery.QueryText, datasetId,connection);
-                        _memoryCache.Set(cacheKey, results, new MemoryCacheEntryOptions
-                        {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-                        });
+                        //_memoryCache.Set(cacheKey, results, new MemoryCacheEntryOptions
+                        //{
+                        //    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                        //});
                         return Ok(results);
                         //return Ok();
                     }
@@ -206,6 +206,11 @@ namespace BackendAPI.Controllers
                             {
                                 hasValues = true;
                             }
+                        }
+                        System.Diagnostics.Debug.WriteLine($"row");
+                        foreach(var i in row)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"i:{i}");
                         }
                         if (hasValues)
                         {
@@ -273,7 +278,7 @@ namespace BackendAPI.Controllers
                 for (int col = 1; col <= worksheet.Dimension.End.Column; col++)
                 {
                     var columnName = worksheet.Cells[headerRowIndex, col].Value?.ToString();
-                    columnName = columnName.Trim();
+                    columnName = columnName?.Trim();
                     if (string.IsNullOrEmpty(columnName))
                     {
                         throw new Exception($"Invalid column name in cell {headerRowIndex},{col}");
