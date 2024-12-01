@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {OverlayModule} from '@angular/cdk/overlay'; 
+import { OverlayModule } from '@angular/cdk/overlay';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedComponent } from './shared/shared/shared.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,7 +21,7 @@ import { UploadDatabaseComponent } from './components/upload-database/upload-dat
 import { GetstartedComponent } from './screens/getstarted/getstarted.component';
 import { DisplayComponent } from './screens/display/display.component';
 import { TableScreenComponent } from './screens/table-screen/table-screen.component';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CoditionScreenComponent } from './screens/codition-screen/codition-screen.component';
 import { OrderByScreenComponent } from './screens/order-by-screen/order-by-screen.component';
@@ -31,7 +31,11 @@ import { CombineTablesScreenComponent } from './screens/combine-tables-screen/co
 import { DisplayColumnsScreenComponent } from './screens/display-columns-screen/display-columns-screen.component';
 import { QueryOverlayComponent } from './overlays/query-overlay/query-overlay.component';
 import { MatTableModule } from '@angular/material/table';
-
+import { SigninComponent } from './components/signin/signin.component';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 
 @NgModule({
   declarations: [
@@ -50,8 +54,7 @@ import { MatTableModule } from '@angular/material/table';
     CombineTablesScreenComponent,
     DisplayColumnsScreenComponent,
     QueryOverlayComponent,
-    
-    
+    SigninComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,11 +73,12 @@ import { MatTableModule } from '@angular/material/table';
     MatSelectModule,
     MatCheckboxModule,
     OverlayModule,
-    MatTableModule
+    MatTableModule,
+    ToastModule,
+    ButtonModule,
+    RippleModule,
   ],
-  providers: [
-    provideAnimationsAsync()
-  ],
-  bootstrap: [AppComponent]
+  providers: [provideAnimationsAsync(),MessageService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

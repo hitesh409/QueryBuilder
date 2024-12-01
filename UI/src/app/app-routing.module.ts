@@ -14,11 +14,13 @@ import { HavingClauseScreenComponent } from './screens/having-clause-screen/havi
 import { CombineTablesScreenComponent } from './screens/combine-tables-screen/combine-tables-screen.component';
 import { DisplayColumnsScreenComponent } from './screens/display-columns-screen/display-columns-screen.component';
 import { appStartGuard } from './guard/app-start-guard/app-start.guard';
+import { SigninComponent } from './components/signin/signin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   // { path: 'shared', component: SharedComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
+  { path: 'signin', component: SigninComponent },
   {
     path: 'app',
     canActivate: [appStartGuard],

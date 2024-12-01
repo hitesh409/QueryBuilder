@@ -1,0 +1,50 @@
+
+<div class="signin-container">
+    <div class="avatar">
+        <i class="material-icons profile">person</i>
+    </div>
+    <div class="form-container">
+        
+        <form (ngSubmit)="onSubmit()" #signinForm="ngForm">
+            <div class="form-div">
+                <div class="form-group">
+                    <i class="material-icons login-avatar">person</i>
+                    <input type="text" class="form-control" id="username" [(ngModel)]="registerModel.username" name="username" placeholder="User name" required 
+                    #username="ngModel">
+                </div>
+                <small class="text-danger validate">
+                    {{ getError(username, 'Username') }}
+                </small>
+            </div>
+            <div class="form-div">
+                <div class="form-group">
+                    <i class="material-icons login-avatar">mail</i>
+                    <input type="email" class="form-control" id="email" [(ngModel)]="registerModel.email" name="email" placeholder="Email" required email
+                    #email="ngModel">
+                </div>
+                <small class="text-danger validate">
+                    {{ getError(email, 'Email') }}
+                </small>
+            </div>
+            <div class="form-div">
+                <div class="form-group">
+                    <i class="material-icons login-avatar">key</i>
+                    <input type="password" class="form-control" id="password" [(ngModel)]="registerModel.password" name="password" placeholder="Password" required
+                    #password="ngModel"
+                    minlength="6">
+                </div>
+                <small class="text-danger validate">
+                    {{ getError(password, 'Password') }}
+                </small>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" [disabled]="signinForm.invalid">Create Account</button>
+            </div>
+        </form>
+    </div>
+    <p-toast [life]="3000" />
+</div>
+
+
+    
+

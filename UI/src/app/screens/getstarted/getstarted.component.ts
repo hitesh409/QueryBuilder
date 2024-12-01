@@ -15,8 +15,10 @@ export class GetstartedComponent {
 
   isallowed: boolean = this.service.chosenDataset != null;
   isDisplay: boolean = false;
+  userName: string | null = '';
 
   ngOnInit(): void {
+    this.userName = localStorage.getItem('user');
     this.service.console();
   }
 

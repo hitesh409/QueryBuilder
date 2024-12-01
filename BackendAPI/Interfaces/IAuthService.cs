@@ -8,6 +8,6 @@ namespace BackendAPI.Interfaces
     public interface IAuthService
     {
         Task<User> AddUser(RegisterModel registerModel);
-        Task<string> Login(LoginModel loginModel);
+        Task<object> Login(LoginModel loginModel);
     }
 }

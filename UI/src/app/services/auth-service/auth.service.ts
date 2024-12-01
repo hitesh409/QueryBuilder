@@ -20,7 +20,7 @@ export class AuthService {
 
   loginUser(loginModel: LoginModel): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post(this.url + 'login', loginModel, { headers, responseType: 'text' });
+    return this.http.post(this.url + 'login', loginModel, { headers });
   }
 
   isAuthenticated(): boolean {

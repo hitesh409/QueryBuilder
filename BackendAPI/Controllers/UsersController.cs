@@ -36,8 +36,15 @@ namespace BackendAPI.Controllers
             {
                 return BadRequest(ModelState.Values.SelectMany(e => e.Errors).Select(e => e.ErrorMessage).ToArray());
             }
-            var user = await _authService.AddUser(register);
-            return Ok(user);
+            try
+            {
+                var user = await _authService.AddUser(register);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized("User already exist, please Login");
+            }
         }
 
         [EnableCors("myAppCors")]               
@@ -50,9 +57,23 @@ namespace BackendAPI.Controllers
                 return BadRequest(ModelState.Values.SelectMany(e=>e.Errors).Select(e=>e.ErrorMessage).ToArray());
             }
 
-            var token =await _authService.Login(login);
+            try
+            {
+                var token =await _authService.Login(login);
 
-            return Ok(token);
+                return Ok(token);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Invalid credential")
+                {
+                    return Unauthorized( "Invalid email or password. Please try again." );
+                }
+
+                // Generic server error response
+                return StatusCode(500,  "An unexpected error occurred. Please try again later." );
+            }
+
 
         }
     }

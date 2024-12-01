@@ -25,13 +25,22 @@ namespace BackendAPI.Services
         }
         public async Task<User> AddUser(RegisterModel registerModel)
         {
-            var user = new User
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == registerModel.Email);
+            if(user != null)
+            {
+                throw new Exception("User already exist");
+            }
+
+            user = new User
             {
                 Id = Guid.NewGuid(),
                 Username = registerModel.UserName,
                 Email = registerModel.Email,
                 CreatedAt = DateTime.UtcNow,
             };
+
+
 
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(registerModel.Password, salt);
@@ -43,7 +52,7 @@ namespace BackendAPI.Services
             return user;
         }
 
-        public async Task<string> Login(LoginModel loginModel)
+        public async Task<object> Login(LoginModel loginModel)
         {
             if(loginModel.Email != null && loginModel.Password!=null) 
             {
@@ -76,12 +85,17 @@ namespace BackendAPI.Services
                         expires: DateTime.UtcNow.AddMinutes(200),
                         signingCredentials: signIn
                     );
-                return (new JwtSecurityTokenHandler().WriteToken(token));
+                var response = new
+                {
+                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    User = user
+                };
+                return (response);
                
             }
             else
             {
-                throw new Exception("User is not Valid");
+                throw new UnauthorizedAccessException("User is not valid");
             }
         }
     }

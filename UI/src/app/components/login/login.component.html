@@ -5,20 +5,38 @@
     </div>
     <div class="form-container">
         
-        <form (ngSubmit)="onSubmit()">
-            <div class="form-group">
-                <i class="material-icons login-avatar">mail</i>
-                <input type="email" class="form-control" id="email" [(ngModel)]="loginModel.email" name="email" placeholder="Email" required>
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="form-div">
+                <div class="form-group">
+                    <i class="material-icons login-avatar">mail</i>
+                    <input type="email" class="form-control" id="email" [(ngModel)]="loginModel.email" name="email" placeholder="Email" required email
+                    #email="ngModel">
+                </div>
+                <small class="text-danger validate">
+                    {{ getError(email, 'Email') }}
+                </small>
+            </div>
+            <div class="form-div">
+                <div class="form-group">
+                    <i class="material-icons login-avatar">key</i>
+                    <input type="password" class="form-control" id="password" [(ngModel)]="loginModel.password" name="password" placeholder="Password" required
+                    #password="ngModel"
+                    >
+                </div>
+                <small class="text-danger validate">
+                    {{ getError(password, 'Password') }}
+                </small>
             </div>
             <div class="form-group">
-                <i class="material-icons login-avatar">key</i>
-                <input type="password" class="form-control" id="password" [(ngModel)]="loginModel.password" name="password" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-            <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+            <p-toast [life]="3000" />
         </form>
+    </div>
+    <div class="signup-link">
+        <p>Don't have an account? 
+            <a [routerLink]="'/signin'" class="signup-link">Create one here</a>
+        </p>
     </div>
 </div>
 

@@ -1,4 +1,4 @@
-.login-container{
+.signin-container{
     display: flex;
     color: var(--font);
     flex-direction: column;
@@ -82,18 +82,4 @@ button:hover{
     background-position: right center; 
     color: white;
     text-decoration: none;
-}
-
-.signup-link {
-    margin-top: 15px;
-    text-align: center;
-}
-
-.signup-link a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.signup-link a:hover {
-    text-decoration: underline;
 }
