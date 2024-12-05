@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
+import { NotificationService } from '../../services/notification-service/notification.service';
 
 @Component({
   selector: 'app-getstarted',
@@ -10,11 +11,11 @@ import { StateManagementService } from '../../services/state-management-service/
 export class GetstartedComponent {
   constructor(
     private router: Router,
-    private service: StateManagementService
+    private service: StateManagementService,
+    private notification: NotificationService
   ) {}
 
   isallowed: boolean = this.service.chosenDataset != null;
-  isDisplay: boolean = false;
   userName: string | null = '';
 
   ngOnInit(): void {
@@ -24,7 +25,7 @@ export class GetstartedComponent {
 
   onNext() {
     if (this.service.chosenDataset==null) {
-      this.isDisplay = true;
+      this.notification.showWarning('Warning','please select database first')
     } else {this.router.navigate(['/app/display']);
     this.service.flag=false;
   }
