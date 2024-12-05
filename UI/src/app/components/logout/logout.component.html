@@ -1,12 +1,12 @@
 <div class="logout-overlay" *ngIf="showOverlay">
   <div class="title">
-    <h3>Test1&commat;gmail.com</h3>
+    <h3>{{email}}</h3>
     <i class="material-icons close" (click)="closeOverlay()">close</i>
   </div>
     <div class="overlay-content"> 
       <div class="avatar">
         <i class="material-icons profile">person</i>
-        <h2>Hi! Test1</h2>
+        <h2>Hi! {{username}}</h2>
       </div>
         <div class="logout" (click)="logout()">
           <i class="material-icons logout-icon ">logout</i>

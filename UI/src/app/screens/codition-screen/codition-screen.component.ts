@@ -8,20 +8,18 @@ import {
 import { Component, Input, OnInit } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { Router } from '@angular/router';
-import { Overlay } from '@angular/cdk/overlay';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
 import { Location } from '@angular/common';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
+import { OverlayService } from '../../services/overlay-service/overlay.service';
 
-interface slotist{
-      logical: string | null,
-      column: string | null,
-      operator: string | null,
-      patternType: string | null,
-      firstValue: string | number | null,
-      secondValue: string | number | null,
-};
+interface slotist {
+  logical: string | null;
+  column: string | null;
+  operator: string | null;
+  patternType: string | null;
+  firstValue: string | number | null;
+  secondValue: string | number | null;
+}
 
 @Component({
   selector: 'app-codition-screen',
@@ -39,25 +37,20 @@ interface slotist{
     ]),
   ],
 })
-
-
-
 export class CoditionScreenComponent implements OnInit {
   tableArray: TableModel[] = this.service.tableArray;
 
   columns: string[] = [];
   generatedQuery: string = '';
-  isAggregateFunction:boolean=(this.service.aggregateFunctions.length>0);
+  isAggregateFunction: boolean = this.service.aggregateFunctions.length > 0;
 
-  ngOnInit():void{
-    for(let table of this.tableArray){
-      for(let column of table.columnNames){
-        this.columns.push(table.tableName+"."+column);
+  ngOnInit(): void {
+    for (let table of this.tableArray) {
+      for (let column of table.columnNames) {
+        this.columns.push(table.tableName + '.' + column);
       }
     }
   }
-
-
 
   slotList: slotist[] = [
     {
@@ -86,7 +79,12 @@ export class CoditionScreenComponent implements OnInit {
     { value: 'NOT BETWEEN', viewValue: 'Not between' },
   ];
 
-   constructor(private router : Router,private service:StateManagementService,private location:Location,private overlay:Overlay) {}
+  constructor(
+    private router: Router,
+    private service: StateManagementService,
+    private location: Location,
+    private overlayService: OverlayService
+  ) {}
 
   reset() {
     const indexToRemove = this.service.generatedQuery.indexOf(
@@ -145,9 +143,9 @@ export class CoditionScreenComponent implements OnInit {
   getQuery() {
     this.generatedQuery += 'WHERE ';
     for (let slot of this.slotList) {
-      if (slot.logical != null) this.generatedQuery += slot.logical+" ";
-      this.generatedQuery += slot.column+" ";
-      this.generatedQuery += slot.operator+" ";
+      if (slot.logical != null) this.generatedQuery += slot.logical + ' ';
+      this.generatedQuery += slot.column + ' ';
+      this.generatedQuery += slot.operator + ' ';
       if (slot.operator === 'LIKE' && slot.patternType != null) {
         if (slot.patternType === '0')
           this.generatedQuery += `'${slot.firstValue}%' `;
@@ -156,16 +154,16 @@ export class CoditionScreenComponent implements OnInit {
         else this.generatedQuery += `'%${slot.firstValue}%' `;
       } else if (slot.operator === 'BETWEEN' || slot.operator === 'NOT BETWEEN')
         this.generatedQuery += `${slot.firstValue} AND ${slot.secondValue} `;
-      else this.generatedQuery += slot.firstValue+" ";
+      else this.generatedQuery += slot.firstValue + ' ';
     }
     this.isChecked = true;
     this.isEditable = false;
     console.log('Query: ', this.generatedQuery);
-    this.service.generatedQuery+=this.generatedQuery;
+    this.service.generatedQuery += this.generatedQuery;
     this.service.console();
   }
 
-  onBack(){
+  onBack() {
     const indexToRemove = this.service.generatedQuery.indexOf(
       this.generatedQuery
     );
@@ -182,32 +180,15 @@ export class CoditionScreenComponent implements OnInit {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
 
-  onNextOrderBy(){
-    this.router.navigate(['/app/order-by'])
+  onNextOrderBy() {
+    this.router.navigate(['/app/order-by']);
   }
 
-  onNextGroupBy(){
-    this.router.navigate(['/app/group-by'])
+  onNextGroupBy() {
+    this.router.navigate(['/app/group-by']);
   }
 
-  preview(){
-    const overlayRef = this.overlay.create({
-      // height:"90vh",
-      // width:"90vw",
-      positionStrategy: this.overlay
-        .position()
-        .global()
-        .centerHorizontally() // Center horizontally
-        .centerVertically(),
-      hasBackdrop: true,
-      backdropClass: 'dark-backdrop',
-      panelClass: 'overlay-panel',
-    });
-    overlayRef.backdropClick().subscribe(() => {
-      overlayRef.dispose();
-    });
-    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
-    overlayRef.attach(queryOverlayRef);
+  preview() {
+    this.overlayService.queryOverlay();
   }
-
 }

@@ -8,10 +8,8 @@ import {
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
-import { Overlay } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
 import { Location } from '@angular/common';
+import { OverlayService } from '../../services/overlay-service/overlay.service';
 
 interface slotist {
   logical: string | null;
@@ -71,8 +69,8 @@ export class HavingClauseScreenComponent implements OnInit {
   constructor(
     private router: Router,
     private service: StateManagementService,
-    private overlay: Overlay,
-    private location:Location
+    private overlayService: OverlayService,
+    private location: Location
   ) {}
 
   reset() {
@@ -91,23 +89,7 @@ export class HavingClauseScreenComponent implements OnInit {
   }
 
   preview() {
-    const overlayRef = this.overlay.create({
-      // height:"90vh",
-      // width:"90vw",
-      positionStrategy: this.overlay
-        .position()
-        .global()
-        .centerHorizontally() // Center horizontally
-        .centerVertically(),
-      hasBackdrop: true,
-      backdropClass: 'dark-backdrop',
-      panelClass: 'overlay-panel',
-    });
-    overlayRef.backdropClick().subscribe(() => {
-      overlayRef.dispose();
-    });
-    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
-    overlayRef.attach(queryOverlayRef);
+    this.overlayService.queryOverlay();
   }
 
   addSlot() {
@@ -154,7 +136,7 @@ export class HavingClauseScreenComponent implements OnInit {
     this.router.navigate(['/app/order-by']);
   }
 
-  onBack(){
+  onBack() {
     this.location.back();
   }
 }

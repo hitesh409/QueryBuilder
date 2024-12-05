@@ -1,12 +1,16 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
-import { Overlay } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
 import { Location } from '@angular/common';
+import { OverlayService } from '../../services/overlay-service/overlay.service';
 
 @Component({
   selector: 'app-group-by-screen',
@@ -25,25 +29,29 @@ import { Location } from '@angular/common';
   ],
 })
 export class GroupByScreenComponent implements OnInit {
-
   tableArray: TableModel[] = this.service.tableArray;
 
-  columns : string[] = [];
+  columns: string[] = [];
   generatedQuery: string = '';
   selectedColumn: string | null = null;
   isChecked: boolean = false;
   isEditable: boolean = true;
   isOptionExpanded: boolean = false;
 
-  ngOnInit():void{
-    for(let table of this.tableArray){
-      for(let column of table.columnNames){
-        this.columns.push(table.tableName+"."+column);
+  ngOnInit(): void {
+    for (let table of this.tableArray) {
+      for (let column of table.columnNames) {
+        this.columns.push(table.tableName + '.' + column);
       }
     }
   }
 
-  constructor(private router:Router,private service:StateManagementService,private overlay:Overlay,private location:Location){}
+  constructor(
+    private router: Router,
+    private service: StateManagementService,
+    private overlayService: OverlayService,
+    private location: Location
+  ) {}
 
   reset() {
     this.generatedQuery = '';
@@ -53,32 +61,15 @@ export class GroupByScreenComponent implements OnInit {
   }
 
   preview() {
-    const overlayRef = this.overlay.create({
-      // height:"90vh",
-      // width:"90vw",
-      positionStrategy: this.overlay
-        .position()
-        .global()
-        .centerHorizontally() // Center horizontally
-        .centerVertically(),
-      hasBackdrop: true,
-      backdropClass: 'dark-backdrop',
-      panelClass: 'overlay-panel',
-    });
-    overlayRef.backdropClick().subscribe(() => {
-      overlayRef.dispose();
-    });
-    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
-    overlayRef.attach(queryOverlayRef);
+    this.overlayService.queryOverlay();
   }
 
-  getQuery(){
-
-    this.generatedQuery+=`GROUP BY ${this.selectedColumn} `
+  getQuery() {
+    this.generatedQuery += `GROUP BY ${this.selectedColumn} `;
 
     this.isChecked = true;
     this.isEditable = false;
-    this.service.generatedQuery+=this.generatedQuery;
+    this.service.generatedQuery += this.generatedQuery;
     this.service.console();
   }
 
@@ -86,16 +77,15 @@ export class GroupByScreenComponent implements OnInit {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
 
-  onNextHaving(){
-    this.router.navigate(['/app/having-clause'])
+  onNextHaving() {
+    this.router.navigate(['/app/having-clause']);
   }
 
-  onNextOrderBy(){
-    this.router.navigate(['/app/order-by'])
+  onNextOrderBy() {
+    this.router.navigate(['/app/order-by']);
   }
 
-  onBack(){
+  onBack() {
     this.location.back();
   }
-
 }

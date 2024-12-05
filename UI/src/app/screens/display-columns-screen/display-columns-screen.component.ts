@@ -9,10 +9,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TableModel } from '../../models/dataset-model';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
-import { Overlay } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
 import { Location } from '@angular/common';
+import { OverlayService } from '../../services/overlay-service/overlay.service';
 
 interface slotist {
   selectedAggregateFunction: string | null;
@@ -62,19 +60,19 @@ export class DisplayColumnsScreenComponent implements OnInit {
   constructor(
     private router: Router,
     private service: StateManagementService,
-    private overlay:Overlay,
-    private location:Location
+    private overlayService: OverlayService,
+    private location: Location
   ) {}
 
-  ngOnInit():void{
-    for(let table of this.tableArray){
-      for(let column of table.columnNames)
-      this.columns.push(table.tableName+"."+column)
+  ngOnInit(): void {
+    for (let table of this.tableArray) {
+      for (let column of table.columnNames)
+        this.columns.push(table.tableName + '.' + column);
     }
   }
 
   onAggragateSelected() {
-    this.service.aggregateFunctions=this.selectedAggr;
+    this.service.aggregateFunctions = this.selectedAggr;
   }
 
   toggleCheckBox(column: string, event: any) {
@@ -93,23 +91,7 @@ export class DisplayColumnsScreenComponent implements OnInit {
   }
 
   preview() {
-    const overlayRef = this.overlay.create({
-      // height:"90vh",
-      // width:"90vw",
-      positionStrategy: this.overlay
-        .position()
-        .global()
-        .centerHorizontally() // Center horizontally
-        .centerVertically(),
-      hasBackdrop: true,
-      backdropClass: 'dark-backdrop',
-      panelClass: 'overlay-panel',
-    });
-    overlayRef.backdropClick().subscribe(() => {
-      overlayRef.dispose();
-    });
-    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
-    overlayRef.attach(queryOverlayRef);
+    this.overlayService.queryOverlay();
   }
 
   reset() {
@@ -160,7 +142,7 @@ export class DisplayColumnsScreenComponent implements OnInit {
     this.isChecked = true;
     this.isEditable = false;
 
-    this.service.generatedQuery+=this.generatedQuery;
+    this.service.generatedQuery += this.generatedQuery;
     this.service.console();
   }
 
@@ -175,7 +157,7 @@ export class DisplayColumnsScreenComponent implements OnInit {
   onNextGroupBy() {
     this.router.navigate(['/app/group-by']);
   }
-  onBack(){
+  onBack() {
     this.location.back();
   }
 }

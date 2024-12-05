@@ -11,7 +11,9 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 })
 export class QueryOverlayComponent {
   constructor(
-    private service: StateManagementService
+    @Inject(OverlayRef) private overlayRef : OverlayRef,
+    private service: StateManagementService,
+
   ) {}
 
   queryText: string = this.service.generatedQuery;
@@ -40,9 +42,9 @@ export class QueryOverlayComponent {
     this.dataSource.data = this.data;
   }
   ngOnInit() {
-    this.fetchData(); // Call the method to fetch data on component initialization (optional)
+    this.fetchData();
   }
   onClose() {
-    
+    this.overlayRef.dispose();
   }
 }

@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
 import { DatasetService } from '../../services/dataset-service/dataset.service';
 import { DatasetModel, TableModel } from '../../models/dataset-model';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { LogoutComponent } from '../../components/logout/logout.component';
 
 @Component({
   selector: 'app-shared',
@@ -29,7 +31,6 @@ export class SharedComponent implements OnInit {
   showTables: boolean = false;
   chosenDatasetIndex: number = -1;
   datasets: DatasetModel[] = [];
-  overlayRef: OverlayRef | null = null;
   errorMessage: string | null = null;
   tables:TableModel[]=[];
   
@@ -104,16 +105,26 @@ export class SharedComponent implements OnInit {
   }
 
   toggleOverlay() {
-    this.showLogoutOverlay = !this.showLogoutOverlay;
+    const overlayRef = this.overlay.create({
+      positionStrategy: this.overlay.position().global().right(),
+      hasBackdrop: false,
+      backdropClass: 'dark-backdrop',
+      panelClass:'overlay-panel',
+    })
+    overlayRef.backdropClick().subscribe(()=>{
+      overlayRef.dispose();
+    })
+
+    const injector = Injector.create({
+      providers:[{provide: OverlayRef,useValue:overlayRef}]
+    })
+
+    const logoutOverlayRef = new ComponentPortal(LogoutComponent,null,injector);
+    overlayRef.attach(logoutOverlayRef);
   }
 
   toggleUpload() {
     this.showUploadOverlay = true;
-  }
-
-  handleLogout() {
-    console.log('User logged out!');
-    this.showLogoutOverlay = !this.showLogoutOverlay;
   }
 
   handleUpload() {

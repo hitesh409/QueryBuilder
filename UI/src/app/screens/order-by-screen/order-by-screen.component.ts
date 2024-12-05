@@ -7,11 +7,9 @@ import {
   transition,
   animate,
 } from '@angular/animations';
-import { Overlay } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
 import { Location } from '@angular/common';
+import { OverlayService } from '../../services/overlay-service/overlay.service';
 
 @Component({
   selector: 'app-order-by-screen',
@@ -49,31 +47,13 @@ export class OrderByScreenComponent implements OnInit {
   }
 
   constructor(
-    private overlay: Overlay,
+    private overlayService: OverlayService,
     private service: StateManagementService,
-    private location:Location
+    private location: Location
   ) {}
 
   preview() {
-    const overlayRef = this.overlay.create({
-      // height:"90vh",
-      // width:"90vw",
-      positionStrategy: this.overlay
-        .position()
-        .global()
-        .centerHorizontally() // Center horizontally
-        .centerVertically(),
-      hasBackdrop: true,
-      backdropClass: 'dark-backdrop',
-      panelClass: 'overlay-panel',
-    });
-    overlayRef.backdropClick().subscribe(() => {
-      overlayRef.dispose();
-    });
-    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
-    overlayRef.attach(queryOverlayRef);
-    
-
+    this.overlayService.queryOverlay();
   }
 
   reset() {
@@ -96,7 +76,7 @@ export class OrderByScreenComponent implements OnInit {
     this.isOptionExpanded = !this.isOptionExpanded;
   }
 
-  onBack(){
+  onBack() {
     this.location.back();
   }
 }

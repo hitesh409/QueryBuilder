@@ -24,6 +24,7 @@ export class LoginComponent {
       (response: any) => {
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', response.user.username);
+        localStorage.setItem('email',response.user.email)
         this.messageService.add({
           severity: 'success',
           summary: 'Login Successfully',

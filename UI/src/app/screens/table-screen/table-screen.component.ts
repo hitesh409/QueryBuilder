@@ -17,10 +17,8 @@ import {
 } from '@angular/animations';
 import { Router } from '@angular/router';
 import { StateManagementService } from '../../services/state-management-service/state-management.service';
-import { Overlay } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { QueryOverlayComponent } from '../../overlays/query-overlay/query-overlay.component';
 import { Location } from '@angular/common';
+import { OverlayService } from '../../services/overlay-service/overlay.service';
 
 interface slotist {
   selectedAggregateFunction: string | null;
@@ -69,7 +67,7 @@ export class TableScreenComponent implements OnInit {
   constructor(
     private router: Router,
     private service: StateManagementService,
-    private overlay: Overlay,
+    private overlayService: OverlayService,
     private location: Location
   ) {}
 
@@ -129,24 +127,7 @@ export class TableScreenComponent implements OnInit {
   }
 
   preview() {
-    const overlayRef = this.overlay.create({
-      // height:"90vh",
-      // width:"90vw",
-      positionStrategy: this.overlay
-        .position()
-        .global()
-        .centerHorizontally() // Center horizontally
-        .centerVertically(),
-      hasBackdrop: true,
-      backdropClass: 'dark-backdrop',
-      panelClass: 'overlay-panel',
-    });
-    overlayRef.backdropClick().subscribe(() => {
-      overlayRef.dispose();
-    });
-
-    const queryOverlayRef = new ComponentPortal(QueryOverlayComponent);
-    overlayRef.attach(queryOverlayRef);
+    this.overlayService.queryOverlay();
   }
 
   addSlot() {
