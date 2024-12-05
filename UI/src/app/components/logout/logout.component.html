@@ -13,6 +13,9 @@
           <span>sign out from your account</span>
         </div>   
     </div>
+    <div *ngIf="isLoading" class="spinner-overlay">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
 </div>
 
 

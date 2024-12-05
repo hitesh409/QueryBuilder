@@ -38,6 +38,9 @@
             <a [routerLink]="'/signin'" class="signup-link">Create one here</a>
         </p>
     </div>
+    <div *ngIf="isLoading" class="spinner-overlay">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
 </div>
 
 

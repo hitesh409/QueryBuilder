@@ -4,7 +4,13 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { DatasetService } from '../../services/dataset-service/dataset.service';
 import { Router } from '@angular/router';
 import { DatasetModel } from '../../models/dataset-model';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-upload-database',
@@ -12,24 +18,31 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   styleUrl: './upload-database.component.css',
   animations: [
     trigger('fadeInOut', [
-      state('void', style({
-        opacity: 0
-      })),
-      transition('void <=> *', animate('0.7s ease')), 
-    ])
-  ]
+      state(
+        'void',
+        style({
+          opacity: 0,
+        })
+      ),
+      transition('void <=> *', animate('0.7s ease')),
+    ]),
+  ],
 })
 export class UploadDatabaseComponent {
-
   @Input() showUploadOverlay = true;
-  @Input() datasets : DatasetModel[] = [];
+  @Input() datasets: DatasetModel[] = [];
   @Output() uploadClicked = new EventEmitter<void>();
   @Output() datasetUploaded = new EventEmitter<void>();
 
   selectedFile: File | null = null;
   isUploadOverlayVisible = false;
+  isLoading : boolean = false;
 
-  constructor(private http: HttpClient,private datasetService : DatasetService,private router:Router) {}
+  constructor(
+    private http: HttpClient,
+    private datasetService: DatasetService,
+    private router: Router
+  ) {}
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -47,23 +60,26 @@ export class UploadDatabaseComponent {
     }
 
     try {
-      this.datasetService.storeDataset(this.selectedFile)
-        .subscribe(response => {
+      this.isLoading = true;
+      this.datasetService.storeDataset(this.selectedFile).subscribe(
+        (response) => {
           console.log('Dataset upload successful!', response);
-          
+
           this.selectedFile = null;
           this.showUploadOverlay = false;
           this.uploadClicked.emit();
           this.datasetUploaded.emit();
-          this.router.navigate(['/shared'])
-        }, error => {
+          this.isLoading = false;
+          this.router.navigate(['/shared']);
+        },
+        (error) => {
+          this.isLoading = false;
           console.error('Error uploading dataset:', error);
-        });
+        }
+      );
     } catch (error) {
+      this.isLoading = false;
       console.error('Error during upload:', error);
     }
-    
   }
-
-  
 }

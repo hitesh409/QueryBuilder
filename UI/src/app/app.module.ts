@@ -36,6 +36,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
+import {ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { RippleModule } from 'primeng/ripple';
     ToastModule,
     ButtonModule,
     RippleModule,
+    ProgressSpinnerModule
   ],
   providers: [provideAnimationsAsync(),MessageService],
   bootstrap: [AppComponent],

@@ -13,6 +13,7 @@ import { NotificationService } from '../../services/notification-service/notific
 export class LoginComponent {
   loginModel: LoginModel = { email: '', password: '' };
   errorMessage: string = '';
+  isLoading: boolean = false;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -24,6 +25,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    this.isLoading = true
     this.authService.loginUser(this.loginModel).subscribe(
       (response: any) => {
         localStorage.setItem('token', response.token);
@@ -35,12 +37,14 @@ export class LoginComponent {
           'You have successfully logged in!'
         );
         setTimeout(() => {
+          this.isLoading = false
           this.router.navigate(['/app']);
-        }, 3000);
+        }, 2000);
       },
       (error) => {
         console.error('Login error:', error);
         this.errorMessage = error.error || 'Login failed!';
+        this.isLoading = false;
         this.notification.showError('Login Error', this.errorMessage);
       }
     );

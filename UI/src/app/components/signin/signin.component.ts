@@ -13,7 +13,7 @@ import { NotificationService } from '../../services/notification-service/notific
 export class SigninComponent {
   registerModel: RegisterModel = { username: '', password: '', email: '' };
   errorMessage: string = '';
-
+  isLoading: boolean = false;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -25,6 +25,7 @@ export class SigninComponent {
   }
 
   onSubmit() {
+    this.isLoading = true;
     this.authService.registerUser(this.registerModel).subscribe(
       (user: any) => {
         console.log('User created successfully', user);
@@ -34,12 +35,14 @@ export class SigninComponent {
           'You have successfully created an account!'
         );
         setTimeout(() => {
+          this.isLoading = false;
           this.router.navigate(['/login']);
-        }, 3000);
+        }, 2000);
       },
       (error) => {
         console.log('Sign up error', error);
         this.errorMessage = error.error || 'sign up failed';
+        this.isLoading = false;
         this.notification.showError('Sign Up error', this.errorMessage);
       }
     );

@@ -1,4 +1,4 @@
-.signin-container{
+.signin-container {
     display: flex;
     color: var(--font);
     flex-direction: column;
@@ -8,78 +8,101 @@
     background-color: var(--screen);
     font-family: 'MyFont';
 }
-.avatar{
+
+.avatar {
     color: var(--font);
     border: 1px solid white;
-    padding: 1rem 1rem  0rem 1rem;
-    border-radius: 50% 50% 0 0 ;
+    padding: 1rem 1rem 0rem 1rem;
+    border-radius: 50% 50% 0 0;
     border-bottom: none;
     margin-bottom: 0;
-    
+
 }
 
-.profile{
+.profile {
     font-size: 3.5rem;
 }
 
-.form-container{
+.form-container {
     border: 1px solid white;
     border-radius: 1rem;
     color: var(--font);
     padding: 1rem;
 }
-.form-div{
+
+.form-div {
     display: flex;
     flex-direction: column;
 }
-.form-group{
+
+.form-group {
     display: flex;
     flex-direction: row;
     padding: 1rem;
     font-size: 1rem;
 }
 
-.login-avatar{
+.login-avatar {
     padding-top: 1rem;
     padding-right: 1rem;
 }
-::placeholder{
+
+::placeholder {
     color: var(--font);
     opacity: 0.5;
 }
 
-.form-control{
+.form-control {
     color: var(--font);
     margin-top: 0.5rem;
-    border:none;
+    border: none;
     border-radius: 0;
     background-color: var(--screen);
     border-bottom: 1px solid var(--font);
 }
 
-.form-control:hover{
+.form-control:hover {
     border-radius: 0.2rem;
     background-color: var(--hover);
 }
 
-.form-control:active{
+.form-control:active {
     border: none;
 }
 
-.validate{
+.validate {
     margin-left: 4rem;
 }
 
-button{
+button {
     width: 100%;
-    background-image: linear-gradient(to right, #DA22FF 0%, #9733EE  51%, #DA22FF  100%);
+    background-image: linear-gradient(to right, #DA22FF 0%, #9733EE 51%, #DA22FF 100%);
     transition: 0.5s;
     background-size: 200% auto;
     font-weight: 500;
 }
 
-button:hover{
-    background-position: right center; 
+button:hover {
+    background-position: right center;
     color: white;
     text-decoration: none;
+}
+
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+p-progressSpinner {
+    width: 50px !important;
+    height: 50px !important;
+    color: #ffffff;
 }
