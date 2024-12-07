@@ -1,0 +1,7 @@
+﻿services:
+  - type: web
+    name: QueryBuilder
+    env: dotnet
+    buildCommand: "dotnet publish -c Release -o out"
+    startCommand: "dotnet out/BackendAPI.dll" # Replace BackendAPI with your main DLL name
+    plan: free
