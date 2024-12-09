@@ -80,7 +80,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Browser")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "browser")),
     RequestPath = ""
 }); // Serve Angular static files
 app.UseRouting();
