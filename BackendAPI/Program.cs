@@ -78,11 +78,7 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "browser")),
-    RequestPath = ""
-}); // Serve Angular static files
+app.UseStaticFiles(); // Serve Angular static files
 app.UseRouting();
 app.UseAuthorization();
 app.UseCors("myAppCors");
