@@ -3,6 +3,7 @@ using BackendAPI.Models;
 using BackendAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -77,7 +78,11 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles(); // Serve Angular static files
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Browser")),
+    RequestPath = ""
+}); // Serve Angular static files
 app.UseRouting();
 app.UseAuthorization();
 app.UseCors("myAppCors");
