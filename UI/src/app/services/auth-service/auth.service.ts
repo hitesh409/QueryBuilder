@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { LoginModel, RegisterModel } from '../../models/user-model';
 import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../Utility/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private url = 'https://localhost:7127/api/Users/';
+  private url = `${environment.apiBaseUrl}/api/Users/`;
 
   constructor(private http: HttpClient) {}
 

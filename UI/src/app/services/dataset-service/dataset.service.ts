@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatasetModel, TableModel } from '../../models/dataset-model';
+import { environment } from '../../Utility/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatasetService {
 
-  private url = "https://localhost:7127/api/Datasets"
+  private url = `${environment}/api/Datasets`
 
   constructor(private http:HttpClient) { }
 
