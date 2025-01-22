@@ -43,7 +43,7 @@ namespace BackendAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Unauthorized(ex);
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
             }
         }
 

@@ -79,9 +79,9 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles(); // Serve Angular static files
+app.UseCors("myAppCors");
 app.UseRouting();
 app.UseAuthorization();
-app.UseCors("myAppCors");
 
 app.MapControllers();
 
