@@ -43,7 +43,7 @@ namespace BackendAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Unauthorized("User already exist, please Login");
+                return Unauthorized(ex);
             }
         }
 
